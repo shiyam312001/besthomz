@@ -1,0 +1,31 @@
+{
+  "name": "besthomz",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "catalog:reconcile": "node scripts/reconcile-catalog.mjs",
+    "catalog:enrich": "node scripts/enrich-products.mjs",
+    "catalog:download-images": "node scripts/download-product-images.mjs",
+    "catalog:verify-gallery": "node scripts/verify-product-gallery.mjs",
+    "catalog:validate": "node scripts/validate-products-import.mjs",
+    "catalog:import": "node scripts/import-products.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.109.0",
+    "lucide-react": "^1.48.0",
+    "next": "16.3.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
+    "tailwindcss": "^4"
+  }
+}

@@ -1,0 +1,359 @@
+@import "tailwindcss";
+
+:root {
+  --bh-green: #1b3d2f;
+  --bh-green-dark: #152a22;
+  --bh-green-light: #2a5240;
+  --bh-sage: #e8ede6;
+  --bh-sage-muted: #eef2eb;
+  --bh-cream: #f7f5f0;
+  --bh-warm-white: #faf8f4;
+  --bh-beige: #e8e4dc;
+  --bh-charcoal: #1a1a1a;
+  --bh-text: #2c2c2c;
+  --bh-text-muted: #6b7280;
+  --bh-border: rgba(27, 61, 47, 0.12);
+  --bh-border-strong: rgba(27, 61, 47, 0.2);
+
+  --bh-glass-bg: rgba(255, 255, 255, 0.72);
+  --bh-glass-bg-strong: rgba(255, 255, 255, 0.88);
+  --bh-glass-border: rgba(255, 255, 255, 0.55);
+
+  --bh-shadow-sm: 0 1px 2px rgba(27, 61, 47, 0.06);
+  --bh-shadow-md: 0 4px 20px rgba(27, 61, 47, 0.08);
+  --bh-shadow-lg: 0 12px 40px rgba(27, 61, 47, 0.1);
+
+  --bh-radius-sm: 0.5rem;
+  --bh-radius-md: 0.75rem;
+  --bh-radius-lg: 1rem;
+  --bh-radius-xl: 1.25rem;
+  --bh-radius-pill: 9999px;
+
+  /** Horizontal page gutters: min 1rem, scales with viewport, max 5rem */
+  --besthomz-content-gutter: clamp(1rem, 3vw, 5rem);
+
+  --bh-container: 80rem;
+  --bh-section-y: 4rem;
+  --bh-header-height: 4.5rem;
+  --bh-topbar-height: 2.25rem;
+  /** Stacked topbar + main nav (mobile: 2rem bar + 3.5rem nav) */
+  --bh-site-header-offset: calc(2rem + 3.5rem);
+
+  --background: var(--bh-warm-white);
+  --foreground: var(--bh-text);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-bh-green: var(--bh-green);
+  --color-bh-green-dark: var(--bh-green-dark);
+  --color-bh-green-light: var(--bh-green-light);
+  --color-bh-sage: var(--bh-sage);
+  --color-bh-sage-muted: var(--bh-sage-muted);
+  --color-bh-cream: var(--bh-cream);
+  --color-bh-warm-white: var(--bh-warm-white);
+  --color-bh-beige: var(--bh-beige);
+  --color-bh-charcoal: var(--bh-charcoal);
+  --color-bh-text: var(--bh-text);
+  --color-bh-muted: var(--bh-text-muted);
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-playfair);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    overflow-x: clip;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --bh-site-header-offset: calc(var(--bh-topbar-height) + 4.75rem);
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-playfair), Georgia, serif;
+    color: var(--bh-charcoal);
+  }
+}
+
+@layer utilities {
+  .bh-container {
+    width: 100%;
+    padding-inline: var(--besthomz-content-gutter);
+    margin-inline: auto;
+  }
+
+  /** Optional cap for readable line length (use with .bh-container--narrow) */
+  .bh-container--narrow {
+    max-width: var(--bh-container);
+  }
+
+  .bh-glass {
+    background: var(--bh-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--bh-glass-border);
+    box-shadow: var(--bh-shadow-sm);
+  }
+
+  .bh-glass-strong {
+    background: var(--bh-glass-bg-strong);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: var(--bh-shadow-md);
+  }
+
+  .bh-glass-subtle {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none;
+    box-shadow: 0 4px 16px rgba(27, 61, 47, 0.05);
+  }
+
+  .bh-glass-dark {
+    background: rgba(27, 61, 47, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+
+  /** Hero / photo overlays — frosted light glass */
+  .bh-glass-hero {
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 8px 32px rgba(27, 61, 47, 0.12);
+  }
+
+  /** Category hero copy block — readable on lifestyle photos */
+  .bh-glass-hero-content {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      0 20px 48px -12px rgba(27, 61, 47, 0.14),
+      0 8px 24px -8px rgba(27, 61, 47, 0.08);
+  }
+
+  .bh-glass-panel {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    box-shadow:
+      0 24px 48px -14px rgba(27, 61, 47, 0.1),
+      0 10px 28px -12px rgba(27, 61, 47, 0.06);
+  }
+
+  /** Featured / home product tiles — borderless frosted card */
+  .bh-glass-card {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none;
+    box-shadow:
+      0 10px 36px rgba(27, 61, 47, 0.08),
+      0 2px 6px rgba(27, 61, 47, 0.04);
+  }
+
+  .bh-glass-card:hover {
+    box-shadow:
+      0 16px 44px rgba(27, 61, 47, 0.1),
+      0 4px 12px rgba(27, 61, 47, 0.05);
+  }
+
+  /** Soft ash elevation for media cards (about, marketing) */
+  .bh-shadow-soft {
+    box-shadow:
+      0 24px 48px -14px rgba(27, 61, 47, 0.1),
+      0 10px 28px -12px rgba(27, 61, 47, 0.06);
+  }
+
+  .bh-input-glass {
+    border: none;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 16px rgba(27, 61, 47, 0.06);
+  }
+
+  .bh-input-glass:focus {
+    outline: none;
+    box-shadow:
+      0 4px 16px rgba(27, 61, 47, 0.08),
+      0 0 0 2px rgba(27, 61, 47, 0.12);
+  }
+
+  .bh-glass-icon-orb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--bh-green);
+    box-shadow:
+      0 10px 28px rgba(27, 61, 47, 0.14),
+      0 4px 10px rgba(27, 61, 47, 0.08);
+  }
+
+  .bh-glass-on-dark {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+
+  .bh-section {
+    padding-block: var(--bh-section-y);
+  }
+
+  @media (max-width: 1023px) {
+    :root {
+      --bh-section-y: 3.25rem;
+      --besthomz-content-gutter: clamp(1.125rem, 4.2vw, 2rem);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .bh-section {
+      padding-block: 2.5rem;
+    }
+
+    :root {
+      --bh-section-y: 2.75rem;
+    }
+  }
+
+  /** Readable body copy on phones & tablets — desktop (lg+) unchanged */
+  @media (max-width: 1023px) {
+    .bh-mobile-copy {
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .bh-mobile-copy-sm {
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+  }
+
+  .bh-scroll-x {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+
+  .bh-scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bh-scroll-x > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  .bh-icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    background: #fff;
+    border: none;
+    box-shadow:
+      0 6px 18px rgba(27, 61, 47, 0.12),
+      0 2px 6px rgba(27, 61, 47, 0.06);
+  }
+
+  @media (min-width: 768px) {
+    .bh-icon-badge {
+      width: 3rem;
+      height: 3rem;
+      box-shadow:
+        0 8px 22px rgba(27, 61, 47, 0.13),
+        0 3px 8px rgba(27, 61, 47, 0.07);
+    }
+  }
+
+  /** Trust strip — soft neomorphic orb behind green icons */
+  .bh-icon-badge-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
+    box-shadow:
+      0 12px 28px rgba(27, 61, 47, 0.1),
+      0 4px 12px rgba(27, 61, 47, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  @media (min-width: 768px) {
+    .bh-icon-badge-trust {
+      width: 3.5rem;
+      height: 3.5rem;
+      box-shadow:
+        0 14px 32px rgba(27, 61, 47, 0.11),
+        0 5px 14px rgba(27, 61, 47, 0.065),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bh-icon-badge-trust {
+      width: 3.75rem;
+      height: 3.75rem;
+    }
+  }
+
+  .bh-focus-ring:focus-visible {
+    outline: 2px solid var(--bh-green);
+    outline-offset: 2px;
+  }
+
+  .pb-safe-nav {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .pb-safe-purchase {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .pb-safe-nav {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+}
