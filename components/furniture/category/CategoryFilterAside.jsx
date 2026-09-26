@@ -43,15 +43,15 @@ export function CategoryFilterAside({
   const siblings = categories.filter((c) => c.slug !== currentSlug);
 
   return (
-    <div className="sticky top-[calc(var(--bh-site-header-offset)+1rem)] space-y-4">
+    <div className="bh-ui sticky top-[calc(var(--bh-site-header-offset)+1rem)] space-y-4">
       <div className="rounded-2xl px-5 py-5 bh-glass-panel md:rounded-3xl md:px-6 md:py-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-bh-muted">Showing</p>
-        <p className="mt-1 font-display text-2xl font-semibold text-bh-charcoal">{productCount}</p>
-        <p className="text-sm text-bh-muted">products in this view</p>
+        <p className="bh-type-eyebrow">Showing</p>
+        <p className="mt-1 text-[length:var(--bh-text-h2)] font-semibold text-bh-charcoal">{productCount}</p>
+        <p className="bh-type-body text-bh-muted">products in this view</p>
       </div>
 
       <div className="rounded-2xl px-5 py-5 bh-glass-panel md:rounded-3xl md:px-6 md:py-6">
-        <h3 className="font-display text-lg font-semibold text-bh-charcoal">Filter By</h3>
+        <h3 className="text-[length:var(--bh-text-h3)] font-semibold text-bh-charcoal">Filter By</h3>
 
         <div className="mt-5 space-y-4">
           {categories.length > 0 && (

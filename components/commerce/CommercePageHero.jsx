@@ -37,11 +37,9 @@ export function CommercePageHero({
             <span className="mx-2 text-bh-muted/60">/</span>
             <span className="font-medium text-bh-charcoal">{breadcrumbCurrent}</span>
           </nav>
-          <h1 className="mt-2 font-display text-[1.75rem] font-semibold leading-tight text-bh-charcoal sm:text-3xl md:mt-3 md:text-4xl lg:text-[2.65rem]">
-            {title}
-          </h1>
+          <h1 className="bh-type-h1 mt-2 md:mt-3">{title}</h1>
           {subtitle && (
-            <p className="mt-2 max-w-lg text-[0.9375rem] leading-relaxed text-bh-muted md:mt-3 md:text-base">{subtitle}</p>
+            <p className="mt-2 max-w-lg bh-type-body text-bh-muted md:mt-3">{subtitle}</p>
           )}
         </div>
 

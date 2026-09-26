@@ -7,12 +7,14 @@ import { pageMetadata } from "@/lib/seo/metadata";
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -35,7 +37,7 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${dmSans.variable} h-full`}
     >
-      <body className="flex min-h-full flex-col antialiased">
+      <body className="flex min-h-full flex-col font-sans font-normal antialiased bh-type-body text-bh-text">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

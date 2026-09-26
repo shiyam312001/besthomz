@@ -109,7 +109,7 @@ export function FurnitureCatalog({ products = [], categories = [] }) {
         <div className="grid gap-8 lg:grid-cols-[17.5rem_1fr]">
           <aside className="hidden lg:block">
             <div className="sticky top-[calc(var(--bh-site-header-offset)+1rem)] rounded-2xl p-5 bh-glass-panel md:rounded-3xl md:p-6">
-              <h3 className="font-display text-lg font-semibold text-bh-charcoal">Filters</h3>
+              <h3 className="bh-ui text-[length:var(--bh-text-h3)] font-semibold text-bh-charcoal">Filters</h3>
 
               <div className="mt-5">
                 <p className="text-xs font-semibold uppercase tracking-wide text-bh-muted">Categories</p>

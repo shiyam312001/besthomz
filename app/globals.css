@@ -41,6 +41,21 @@
 
   --background: var(--bh-warm-white);
   --foreground: var(--bh-text);
+
+  /* Typography scale — mobile first (see lg breakpoint for desktop) */
+  --bh-text-hero: clamp(2.125rem, 4.6vw, 2.5rem);
+  --bh-text-h1: clamp(1.75rem, 3.8vw, 2rem);
+  --bh-text-h2: clamp(1.5rem, 3.2vw, 1.75rem);
+  --bh-text-h3: clamp(1.125rem, 2.6vw, 1.375rem);
+  --bh-text-body: clamp(0.8125rem, 2.1vw, 0.875rem);
+  --bh-text-small: clamp(0.6875rem, 1.8vw, 0.75rem);
+
+  --bh-leading-hero: 1.08;
+  --bh-leading-h1: 1.12;
+  --bh-leading-h2: 1.15;
+  --bh-leading-h3: 1.22;
+  --bh-leading-body: 1.55;
+  --bh-leading-small: 1.45;
 }
 
 @theme inline {
@@ -57,8 +72,9 @@
   --color-bh-charcoal: var(--bh-charcoal);
   --color-bh-text: var(--bh-text);
   --color-bh-muted: var(--bh-text-muted);
-  --font-sans: var(--font-dm-sans);
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-dm-sans), sans-serif;
+  --font-serif: var(--font-playfair), serif;
+  --font-display: var(--font-playfair), serif;
 }
 
 @layer base {
@@ -75,8 +91,10 @@
   body {
     background: var(--background);
     color: var(--foreground);
-    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   @media (min-width: 768px) {
@@ -85,16 +103,186 @@
     }
   }
 
+  @media (min-width: 1024px) {
+    :root {
+      --bh-text-hero: clamp(3.5rem, 2.8vw + 1.25rem, 4rem);
+      --bh-text-h1: clamp(2.625rem, 1.8vw + 1.5rem, 3rem);
+      --bh-text-h2: clamp(2rem, 1.2vw + 1.25rem, 2.5rem);
+      --bh-text-h3: clamp(1.5rem, 0.6vw + 1.1rem, 1.75rem);
+      --bh-text-body: clamp(0.875rem, 0.25vw + 0.8rem, 1rem);
+      --bh-text-small: clamp(0.75rem, 0.15vw + 0.7rem, 0.8125rem);
+    }
+  }
+
   h1,
   h2,
-  h3,
-  .font-display {
-    font-family: var(--font-playfair), Georgia, serif;
+  h3 {
+    font-family: var(--font-playfair), serif;
+    font-weight: 600;
     color: var(--bh-charcoal);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--bh-text-h1);
+    line-height: var(--bh-leading-h1);
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: var(--bh-text-h2);
+    line-height: var(--bh-leading-h2);
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-size: var(--bh-text-h3);
+    line-height: var(--bh-leading-h3);
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-weight: 600;
+    color: var(--bh-charcoal);
+  }
+
+  .bh-ui h1,
+  .bh-ui h2,
+  .bh-ui h3,
+  .bh-ui h4,
+  .bh-ui h5,
+  .bh-ui h6 {
+    font-family: var(--font-dm-sans), sans-serif;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
   }
 }
 
 @layer utilities {
+  .font-display {
+    font-family: var(--font-playfair), serif;
+    font-weight: 600;
+  }
+
+  .bh-type-hero {
+    font-family: var(--font-playfair), serif;
+    font-size: var(--bh-text-hero);
+    font-weight: 600;
+    line-height: var(--bh-leading-hero);
+    letter-spacing: -0.02em;
+    color: var(--bh-charcoal);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .bh-type-h1 {
+    font-family: var(--font-playfair), serif;
+    font-size: var(--bh-text-h1);
+    font-weight: 600;
+    line-height: var(--bh-leading-h1);
+    letter-spacing: -0.02em;
+    color: var(--bh-charcoal);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .bh-type-h2 {
+    font-family: var(--font-playfair), serif;
+    font-size: var(--bh-text-h2);
+    font-weight: 600;
+    line-height: var(--bh-leading-h2);
+    letter-spacing: -0.015em;
+    color: var(--bh-charcoal);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .bh-type-h3 {
+    font-family: var(--font-playfair), serif;
+    font-size: var(--bh-text-h3);
+    font-weight: 600;
+    line-height: var(--bh-leading-h3);
+    color: var(--bh-charcoal);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .bh-type-body {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-body);
+    font-weight: 400;
+    line-height: var(--bh-leading-body);
+  }
+
+  .bh-type-small {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-small);
+    font-weight: 400;
+    line-height: var(--bh-leading-small);
+  }
+
+  .bh-type-eyebrow {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-small);
+    font-weight: 600;
+    line-height: var(--bh-leading-small);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bh-text-muted);
+  }
+
+  .bh-product-title {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-h1);
+    font-weight: 600;
+    line-height: var(--bh-leading-h1);
+    letter-spacing: -0.015em;
+    color: var(--bh-charcoal);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .bh-ui {
+    font-family: var(--font-dm-sans), sans-serif;
+  }
+
+  /** Primary nav — DM Sans body scale */
+  .bh-nav-link {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-body);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .bh-nav-link-active {
+    font-weight: 600;
+  }
+
+  .bh-nav-dropdown-item {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-body);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .bh-nav-dropdown-cta {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--bh-text-small);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+  }
+
   .bh-container {
     width: 100%;
     padding-inline: var(--besthomz-content-gutter);
@@ -252,13 +440,13 @@
   /** Readable body copy on phones & tablets — desktop (lg+) unchanged */
   @media (max-width: 1023px) {
     .bh-mobile-copy {
-      font-size: 0.9375rem;
-      line-height: 1.55;
+      font-size: var(--bh-text-body);
+      line-height: var(--bh-leading-body);
     }
 
     .bh-mobile-copy-sm {
-      font-size: 0.8125rem;
-      line-height: 1.45;
+      font-size: var(--bh-text-small);
+      line-height: var(--bh-leading-small);
     }
   }
 

@@ -11,7 +11,7 @@ export function MobileHeader({ scrolled, onMenuOpen, menuOpen = false }) {
   return (
     <div
       className={cn(
-        "flex h-14 items-center justify-between gap-2 px-4 md:hidden",
+        "flex h-14 items-center justify-between gap-2 px-4 lg:hidden",
         scrolled && "shadow-sm",
       )}
     >

@@ -31,7 +31,7 @@ export function HomeWhyChoose() {
             </p>
             <Link
               href="/about"
-              className="mt-6 inline-flex h-11 items-center gap-1.5 rounded-full border border-bh-border bg-white px-5 text-sm font-semibold text-bh-charcoal shadow-sm transition hover:border-bh-green hover:text-bh-green bh-focus-ring"
+              className="mt-6 inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-sm font-semibold text-bh-charcoal transition bh-focus-ring max-lg:bh-glass-panel max-lg:shadow-[0_10px_28px_rgba(27,61,47,0.1)] max-lg:hover:text-bh-green lg:border lg:border-bh-border lg:bg-white lg:shadow-sm lg:hover:border-bh-green lg:hover:text-bh-green"
             >
               Know More
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -39,7 +39,7 @@ export function HomeWhyChoose() {
           </div>
 
           {/* Right: unified card containing icon grid + image */}
-          <div className="grid grid-cols-1 overflow-hidden rounded-3xl bg-white shadow-sm sm:grid-cols-[1.3fr_1fr] lg:col-span-9">
+          <div className="grid grid-cols-1 overflow-hidden rounded-3xl bg-white shadow-[0_16px_40px_-14px_rgba(27,61,47,0.12)] max-lg:bh-glass-panel sm:grid-cols-[1.3fr_1fr] lg:col-span-9 lg:shadow-sm">
             {/* Icon grid */}
             <div className="grid grid-cols-3 gap-x-4 gap-y-6 p-6 md:gap-x-6 md:p-8">
               {PILLARS.map((item) => (

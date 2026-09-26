@@ -12,6 +12,7 @@ import { TopContactBar, TopContactBarMobile } from "@/components/layout/TopConta
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { MobileMenuDrawer } from "@/components/layout/MobileMenuDrawer";
 import { cn } from "@/lib/cn";
+import { desktopNavLinkClass } from "@/components/layout/header-nav-styles";
 import { useQuote } from "@/components/providers/QuoteProvider";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 
@@ -27,7 +28,7 @@ function DesktopHeader({ navMenus }) {
   }
 
   return (
-    <PageContainer className="hidden h-[4.75rem] items-center gap-3 md:flex lg:gap-4 xl:gap-6">
+    <PageContainer className="hidden h-[4.75rem] items-center gap-3 lg:flex lg:gap-4 xl:gap-6">
       <Logo className="shrink-0" showTagline />
 
       <nav aria-label="Main" className="hidden min-w-0 flex-1 justify-center xl:flex">
@@ -46,16 +47,7 @@ function DesktopHeader({ navMenus }) {
                     viewAllLabel={item.menu === "furniture" ? "View all furniture" : "View all rooms"}
                   />
                 ) : (
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "relative inline-flex items-center gap-0.5 whitespace-nowrap py-2 text-[13px] font-medium bh-focus-ring rounded-sm lg:text-sm",
-                      "after:absolute after:-bottom-0.5 after:left-1/2 after:h-0.5 after:w-5 after:-translate-x-1/2 after:rounded-full after:bg-bh-green after:transition-opacity",
-                      isActive
-                        ? "text-bh-green after:opacity-100"
-                        : "text-bh-text after:opacity-0 hover:text-bh-green hover:after:opacity-100",
-                    )}
-                  >
+                  <Link href={item.href} className={desktopNavLinkClass(isActive)}>
                     {item.label}
                   </Link>
                 )}
@@ -83,7 +75,7 @@ function DesktopHeader({ navMenus }) {
             name="q"
             type="search"
             placeholder="Search furniture..."
-            className="h-10 w-full rounded-full border border-black/10 bg-bh-cream/70 pl-10 pr-4 text-sm text-bh-text placeholder:text-bh-muted focus:border-bh-green focus:bg-white focus:outline-none focus:ring-2 focus:ring-bh-green/12"
+            className="h-10 w-full rounded-full border border-black/10 bg-bh-cream/70 pl-10 pr-4 font-sans text-[length:var(--bh-text-body)] text-bh-text placeholder:text-bh-muted focus:border-bh-green focus:bg-white focus:outline-none focus:ring-2 focus:ring-bh-green/12"
           />
         </form>
 
@@ -116,7 +108,7 @@ function DesktopHeader({ navMenus }) {
         <button
           type="button"
           onClick={() => openQuote()}
-          className="hidden h-10 items-center gap-1.5 rounded-full bg-bh-green px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-bh-green-light bh-focus-ring sm:inline-flex lg:px-5"
+          className="hidden h-10 items-center gap-1.5 rounded-full bg-bh-green px-4 font-sans text-[length:var(--bh-text-body)] font-semibold text-white shadow-sm transition hover:bg-bh-green-light bh-focus-ring sm:inline-flex lg:px-5"
         >
           Get Quote
           <ArrowRight className="h-4 w-4" aria-hidden />
@@ -143,8 +135,10 @@ export function Header({ navMenus = {} }) {
       <TopContactBarMobile />
       <div
         className={cn(
-          "border-b border-black/10 bg-white transition-shadow duration-200",
-          scrolled && "shadow-[0_2px_12px_rgba(27,61,47,0.06)]",
+          "bg-white transition-shadow duration-200",
+          "max-lg:border-0 max-lg:shadow-[0_8px_28px_-14px_rgba(27,61,47,0.1)]",
+          "lg:border-b lg:border-black/10",
+          scrolled && "lg:shadow-[0_2px_12px_rgba(27,61,47,0.06)]",
         )}
       >
         <MobileHeader scrolled={scrolled} menuOpen={menuOpen} onMenuOpen={() => setMenuOpen(true)} />

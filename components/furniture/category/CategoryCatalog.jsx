@@ -72,7 +72,7 @@ export function CategoryCatalog({ category, products = [], categories = [], conf
 
   return (
     <section className="bg-bh-warm-white pb-14 md:pb-20">
-      <PageContainer className="-mt-6 pt-2 md:-mt-8">
+      <PageContainer className="pt-2 mt-[40px]">
         <div className="grid gap-8 lg:grid-cols-[18rem_1fr] lg:gap-10">
           <aside className="hidden lg:block">
             <CategoryFilterAside

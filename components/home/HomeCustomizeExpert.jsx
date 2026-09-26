@@ -65,7 +65,7 @@ export function HomeCustomizeExpert() {
         </div>
 
         {/* RIGHT: Talk to an expert */}
-        <div className="flex min-h-[200px] overflow-hidden rounded-3xl bg-bh-warm-white shadow-sm md:min-h-[230px] lg:aspect-[2.6/1] lg:min-h-0">
+        <div className="flex min-h-[200px] overflow-hidden rounded-2xl bg-bh-warm-white shadow-[0_16px_40px_-14px_rgba(27,61,47,0.1)] max-lg:bh-glass-panel md:min-h-[230px] md:rounded-3xl lg:aspect-[2.6/1] lg:min-h-0 lg:shadow-sm">
           <div className="flex w-[55%] flex-col justify-center gap-2 p-6 md:w-1/2 md:p-8">
             <h2 className="font-display text-xl font-semibold text-bh-charcoal md:text-2xl">
               Need Help Choosing?

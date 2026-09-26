@@ -103,7 +103,7 @@ export function CartView({ cart, onChanged }) {
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:items-start lg:gap-10">
         <div>
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3 md:mb-6">
-            <h2 className="font-display text-lg font-semibold text-bh-charcoal md:text-xl">
+            <h2 className="font-sans text-[length:var(--bh-text-h3)] font-semibold text-bh-charcoal">
               Cart Items ({itemCount})
             </h2>
             <button
@@ -159,7 +159,7 @@ export function CartView({ cart, onChanged }) {
                     <div className="min-w-0">
                       <Link
                         href={product?.slug ? `/product/${product.slug}` : "#"}
-                        className="font-display text-[0.9375rem] font-semibold leading-snug text-bh-charcoal hover:text-bh-green md:text-lg lg:text-lg"
+                        className="font-sans text-[length:var(--bh-text-body)] font-semibold leading-snug text-bh-charcoal hover:text-bh-green lg:text-[length:var(--bh-text-body)]"
                       >
                         {product?.name}
                       </Link>
@@ -286,7 +286,7 @@ export function CartView({ cart, onChanged }) {
         </div>
 
         <aside className="rounded-2xl p-6 bh-glass-panel lg:sticky lg:top-24 lg:rounded-3xl lg:p-7">
-          <h2 className="font-display text-lg font-semibold text-bh-charcoal md:text-xl">Order Summary</h2>
+          <h2 className="font-sans text-[length:var(--bh-text-h3)] font-semibold text-bh-charcoal">Order Summary</h2>
           <dl className="mt-5 space-y-3 text-sm">
             <div className="flex justify-between gap-4">
               <dt className="text-bh-muted">Total Items</dt>
@@ -306,7 +306,7 @@ export function CartView({ cart, onChanged }) {
           <div className="my-5 h-px bg-gradient-to-r from-transparent via-bh-sage/50 to-transparent" />
           <div className="flex justify-between gap-4 text-sm">
             <span className="font-medium text-bh-charcoal">Estimated Total</span>
-            <span className="font-display text-lg font-semibold text-bh-charcoal">Quote</span>
+            <span className="font-sans text-[length:var(--bh-text-h3)] font-semibold text-bh-charcoal">Quote</span>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-bh-muted">
             Final price will be shared in your personalised quote — no payment required now.

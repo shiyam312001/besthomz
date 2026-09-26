@@ -3,22 +3,15 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { desktopNavLinkClass } from "@/components/layout/header-nav-styles";
 
 export function HeaderNavDropdown({ label, href, items, isActive, viewAllLabel }) {
   const hasItems = items?.length > 0;
+  const linkClass = desktopNavLinkClass(isActive);
 
   if (!hasItems) {
     return (
-      <Link
-        href={href}
-        className={cn(
-          "relative inline-flex items-center gap-0.5 whitespace-nowrap py-2 text-[13px] font-medium bh-focus-ring rounded-sm lg:text-sm",
-          "after:absolute after:-bottom-0.5 after:left-1/2 after:h-0.5 after:w-5 after:-translate-x-1/2 after:rounded-full after:bg-bh-green after:transition-opacity",
-          isActive
-            ? "text-bh-green after:opacity-100"
-            : "text-bh-text after:opacity-0 hover:text-bh-green hover:after:opacity-100",
-        )}
-      >
+      <Link href={href} className={linkClass}>
         {label}
       </Link>
     );
@@ -26,17 +19,7 @@ export function HeaderNavDropdown({ label, href, items, isActive, viewAllLabel }
 
   return (
     <div className="group relative">
-      <Link
-        href={href}
-        className={cn(
-          "relative inline-flex items-center gap-0.5 whitespace-nowrap py-2 text-[13px] font-medium bh-focus-ring rounded-sm lg:text-sm",
-          "after:absolute after:-bottom-0.5 after:left-1/2 after:h-0.5 after:w-5 after:-translate-x-1/2 after:rounded-full after:bg-bh-green after:transition-opacity",
-          isActive
-            ? "text-bh-green after:opacity-100"
-            : "text-bh-text after:opacity-0 hover:text-bh-green hover:after:opacity-100",
-        )}
-        aria-haspopup="true"
-      >
+      <Link href={href} className={linkClass} aria-haspopup="true">
         {label}
         <ChevronDown
           className="h-3.5 w-3.5 text-bh-muted transition group-hover:rotate-180 group-focus-within:rotate-180"
@@ -57,7 +40,7 @@ export function HeaderNavDropdown({ label, href, items, isActive, viewAllLabel }
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="block rounded-xl px-3 py-2.5 text-sm font-medium text-bh-charcoal transition hover:bg-bh-sage-muted/80 hover:text-bh-green bh-focus-ring"
+                  className="bh-nav-dropdown-item block rounded-xl px-3 py-2.5 text-bh-charcoal transition hover:bg-bh-sage-muted/80 hover:text-bh-green bh-focus-ring"
                 >
                   {item.label}
                 </Link>
@@ -67,7 +50,7 @@ export function HeaderNavDropdown({ label, href, items, isActive, viewAllLabel }
           <div className="mt-1 border-t border-black/5 pt-1">
             <Link
               href={href}
-              className="block rounded-xl px-3 py-2.5 text-xs font-semibold text-bh-green bh-focus-ring hover:bg-bh-sage-muted/60"
+              className="bh-nav-dropdown-cta block rounded-xl px-3 py-2.5 text-bh-green bh-focus-ring hover:bg-bh-sage-muted/60"
             >
               {viewAllLabel}
             </Link>

@@ -34,15 +34,13 @@ export function AboutHero() {
             <span className="mx-2 text-bh-muted/60">/</span>
             <span className="font-medium text-bh-charcoal">About</span>
           </nav>
-          <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-bh-muted md:mt-4">
-            About us
-          </p>
-          <h1 className="mt-2 font-display text-[1.75rem] font-semibold leading-tight text-bh-charcoal sm:text-3xl md:text-4xl lg:text-[2.65rem]">
+          <p className="bh-type-eyebrow mt-3 md:mt-4">About us</p>
+          <h1 className="bh-type-h1 mt-2">
             More Than Furniture,
             <br />
             A Better Way of Living
           </h1>
-          <p className="mt-2 max-w-lg text-[0.9375rem] leading-relaxed text-bh-muted md:mt-3 md:text-base">
+          <p className="mt-2 max-w-lg bh-type-body text-bh-muted md:mt-3">
             At Best Homz, we believe furniture should elevate everyday life — blending comfort, craftsmanship and
             thoughtful design for homes across Chennai.
           </p>

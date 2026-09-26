@@ -30,12 +30,12 @@ function FooterColumn({ title, children, defaultOpen = false }) {
 
 export function Footer() {
   return (
-    <footer className="mt-auto bg-bh-cream pb-safe-nav text-bh-dark md:pb-0">
+    <footer className="mt-auto bg-bh-cream pb-safe-nav text-bh-dark lg:pb-0">
       <PageContainer className="py-12 md:py-14 lg:py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8 xl:gap-10">
           <div className="lg:col-span-3">
             <Logo showTagline />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-bh-muted">{site.description}</p>
+            <p className="mt-4 max-w-xs bh-type-body text-bh-muted">{site.description}</p>
             <div className="mt-5 flex gap-2">
               {[
                 { href: site.social.facebook, label: "Facebook", Icon: IconFacebook },

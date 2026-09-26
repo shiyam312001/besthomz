@@ -24,7 +24,7 @@ export function HomeInspiration() {
             </p>
             <Link
               href="/furniture"
-              className="mt-5 inline-flex h-10 w-fit items-center gap-1.5 rounded-full border border-bh-border/80 bg-white px-5 text-sm font-semibold text-bh-charcoal shadow-sm transition hover:border-bh-green hover:text-bh-green bh-focus-ring"
+              className="mt-5 inline-flex h-10 w-fit items-center gap-1.5 rounded-full px-5 text-sm font-semibold text-bh-charcoal transition bh-focus-ring max-lg:bh-glass-panel max-lg:shadow-[0_8px_22px_rgba(27,61,47,0.08)] max-lg:hover:text-bh-green lg:border lg:border-bh-border/80 lg:bg-white lg:shadow-sm lg:hover:border-bh-green lg:hover:text-bh-green"
             >
               View Gallery
               <ArrowRight className="h-3.5 w-3.5" aria-hidden />

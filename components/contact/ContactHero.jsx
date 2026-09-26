@@ -31,11 +31,9 @@ export function ContactHero() {
       </p>
       <PageContainer className="relative flex min-h-[20rem] flex-col justify-between py-6 md:min-h-[26rem] md:py-10 lg:min-h-[30rem] lg:py-12">
         <div className="max-w-xl rounded-2xl p-4 bh-glass-hero-content md:rounded-3xl md:p-7 lg:p-8">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-bh-muted">Contact us</p>
-          <h1 className="mt-2 font-display text-[1.75rem] font-semibold leading-tight text-bh-charcoal sm:text-3xl md:text-4xl lg:text-[2.65rem]">
-            We&apos;re Here To Help
-          </h1>
-          <p className="mt-2 max-w-lg text-[0.9375rem] leading-relaxed text-bh-muted md:mt-3 md:text-base">
+          <p className="bh-type-eyebrow">Contact us</p>
+          <h1 className="bh-type-h1 mt-2">We&apos;re Here To Help</h1>
+          <p className="mt-2 max-w-lg bh-type-body text-bh-muted md:mt-3">
             Questions about furniture, quotes or showroom visits? Reach out — our Chennai team is ready to assist.
           </p>
         </div>

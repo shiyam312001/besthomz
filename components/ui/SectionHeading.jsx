@@ -24,26 +24,16 @@ export function SectionHeading({
       )}
     >
       <div className={cn("max-w-2xl", isCenter && "mx-auto")}>
-        {eyebrow && (
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-bh-muted">
-            {eyebrow}
-          </p>
-        )}
-        {title && (
-          <h2 className="font-display text-3xl font-semibold leading-tight text-bh-charcoal md:text-4xl">
-            {title}
-          </h2>
-        )}
-        {description && (
-          <p className="mt-2 text-sm leading-relaxed text-bh-muted md:text-base">{description}</p>
-        )}
+        {eyebrow && <p className="mb-2 bh-type-eyebrow">{eyebrow}</p>}
+        {title && <h2 className="bh-type-h2">{title}</h2>}
+        {description && <p className="mt-2 bh-type-body text-bh-muted">{description}</p>}
       </div>
       {(action || actionHref) && (
         <div className={cn("shrink-0", isCenter && "mt-1")}>
           {action ?? (
             <Link
               href={actionHref}
-              className="inline-flex items-center gap-1 text-sm font-semibold text-bh-green bh-focus-ring rounded-md"
+              className="inline-flex items-center gap-1 bh-type-body font-semibold text-bh-green bh-focus-ring rounded-md"
             >
               {actionLabel}
               <ArrowRight className="h-4 w-4" aria-hidden />

@@ -15,17 +15,32 @@ const TRUST = [
   { icon: "/BestHomz/Homepage/icons/15-icon-families.png", label: "Trusted by 1000+ Families" },
 ];
 
+const MOBILE_TRUST_LABELS = [
+  "Premium Materials",
+  "Custom Design Options",
+  "5 Years Warranty",
+  "Trusted by 1000+ Families",
+];
+const MOBILE_TRUST = TRUST.filter((t) => MOBILE_TRUST_LABELS.includes(t.label));
+
 export function HomeTrustVision() {
   return (
-    <section className="bg-bh-warm-white py-8 md:py-10 lg:py-12">
+    <section className="bg-bh-warm-white py-6 max-lg:py-7 md:py-10 lg:py-12">
       <PageContainer>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-stretch lg:gap-5">
-          <div className="bh-glass-panel flex min-h-[7.5rem] items-center rounded-2xl px-2 py-7 md:min-h-[8.5rem] md:rounded-3xl md:px-4 md:py-8 lg:col-span-8">
-            <div className="grid w-full grid-cols-3 gap-x-1 gap-y-8 md:flex md:flex-nowrap md:items-center md:justify-between md:gap-y-0">
+          <div className="bh-glass-panel flex min-h-[6.5rem] items-center rounded-2xl px-3 py-5 shadow-[0_16px_40px_-12px_rgba(27,61,47,0.1)] max-lg:py-6 md:min-h-[8.5rem] md:rounded-3xl md:px-4 md:py-8 lg:col-span-8 lg:shadow-none">
+            <div className="flex w-full items-center justify-between gap-1 overflow-x-auto [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
+              {MOBILE_TRUST.map((item) => (
+                <div key={item.label} className="flex min-w-[4.25rem] flex-1 justify-center px-0.5 [&_p]:text-[10px] [&_p]:leading-tight sm:[&_p]:text-[11px]">
+                  <HomeTrustBadge icon={item.icon} label={item.label} />
+                </div>
+              ))}
+            </div>
+            <div className="hidden w-full lg:flex lg:flex-nowrap lg:items-center lg:justify-between">
               {TRUST.map((item, index) => (
                 <Fragment key={item.label}>
-                  {index > 0 && <HomeStripDivider tall className="mx-0 max-md:hidden" />}
-                  <div className="flex justify-center px-0.5 md:flex-1 md:px-1">
+                  {index > 0 && <HomeStripDivider tall className="mx-0" />}
+                  <div className="flex flex-1 justify-center px-1">
                     <HomeTrustBadge icon={item.icon} label={item.label} />
                   </div>
                 </Fragment>
@@ -33,7 +48,7 @@ export function HomeTrustVision() {
             </div>
           </div>
 
-          <div className="relative min-h-[11rem] overflow-hidden rounded-2xl shadow-[0_20px_44px_-14px_rgba(27,61,47,0.2)] md:min-h-[8.5rem] md:rounded-3xl lg:col-span-4 lg:min-h-0">
+          <div className="relative min-h-[10.5rem] overflow-hidden rounded-2xl shadow-[0_20px_44px_-14px_rgba(27,61,47,0.2)] max-lg:min-h-[11rem] md:min-h-[8.5rem] md:rounded-3xl lg:col-span-4 lg:min-h-0">
             <Image
               src="/BestHomz/Homepage/banners/16-banner-vision-armchair.png"
               alt=""

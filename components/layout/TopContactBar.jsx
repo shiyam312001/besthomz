@@ -12,7 +12,7 @@ const socialIcons = [
 
 export function TopContactBar() {
   return (
-    <div className="hidden bg-bh-green text-white md:block">
+    <div className="hidden bg-bh-green text-white lg:block">
       <PageContainer className="grid h-[var(--bh-topbar-height)] grid-cols-[1fr_auto_1fr] items-center gap-4 text-[11px] lg:text-xs">
         <p className="inline-flex min-w-0 items-center gap-1.5 truncate">
           <MapPin className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
@@ -53,13 +53,21 @@ export function TopContactBar() {
   );
 }
 
-/** Compact bar for mobile — phone only */
+/** Compact bar for mobile & tablet (hidden from md up). */
 export function TopContactBarMobile() {
   return (
-    <div className="bg-bh-green text-white md:hidden">
-      <PageContainer className="flex h-8 items-center justify-center text-[11px]">
-        <Link href={site.phoneHref} className="font-medium bh-focus-ring rounded-sm">
-          {site.phone}
+    <div className="bg-bh-green text-white lg:hidden">
+      <PageContainer className="flex h-9 items-center justify-between gap-3 text-[10px] sm:text-[11px]">
+        <p className="inline-flex min-w-0 flex-1 items-center gap-1.5 truncate opacity-95">
+          <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <span className="truncate">{site.address.full}</span>
+        </p>
+        <Link
+          href={site.phoneHref}
+          className="inline-flex shrink-0 items-center justify-center rounded-full p-1.5 hover:bg-white/10 bh-focus-ring"
+          aria-label={`Call ${site.phone}`}
+        >
+          <Phone className="h-4 w-4" aria-hidden />
         </Link>
       </PageContainer>
     </div>

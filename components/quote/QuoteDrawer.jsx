@@ -23,13 +23,13 @@ export function QuoteDrawer({ open, onClose, context }) {
         aria-label="Close"
       />
       <div
-        className="relative flex h-full w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bh-glass-panel md:h-auto md:max-h-[100dvh] md:min-h-full md:rounded-none md:rounded-l-3xl md:shadow-[0_0_80px_-8px_rgba(27,61,47,0.18)]"
+        className="bh-ui relative flex h-full w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bh-glass-panel md:h-auto md:max-h-[100dvh] md:min-h-full md:rounded-none md:rounded-l-3xl md:shadow-[0_0_80px_-8px_rgba(27,61,47,0.18)]"
       >
         <div className="shrink-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-7">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="font-display text-xl font-semibold text-bh-charcoal md:text-2xl">Get a Quote</h2>
-              <p className="mt-1 max-w-sm text-xs leading-relaxed text-bh-muted md:text-sm">
+              <h2 className="text-[length:var(--bh-text-h2)] font-semibold text-bh-charcoal">Get a Quote</h2>
+              <p className="mt-1 max-w-sm bh-type-small text-bh-muted">
                 Share your requirements and our team will respond with options and personalised pricing.
               </p>
             </div>

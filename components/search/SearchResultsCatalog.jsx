@@ -92,7 +92,7 @@ export function SearchResultsCatalog({ query, products = [] }) {
 
               <div className="rounded-2xl p-5 bh-glass-panel md:rounded-3xl md:p-6">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="font-display text-lg font-semibold text-bh-charcoal">Filters</h3>
+                  <h3 className="text-[length:var(--bh-text-h3)] font-semibold text-bh-charcoal">Filters</h3>
                   <button
                     type="button"
                     onClick={clearFilters}

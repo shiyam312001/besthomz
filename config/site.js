@@ -54,8 +54,8 @@ export const footerCompanyLinks = [
 
 export const bottomNavItems = [
   { label: "Home", href: "/", icon: "home" },
-  { label: "Explore", href: "/furniture", icon: "compass" },
+  { label: "Shop", href: "/furniture", icon: "shop" },
+  { label: "Rooms", href: "/rooms", icon: "rooms" },
   { label: "Wishlist", href: "/wishlist", icon: "heart" },
-  { label: "Cart", href: "/cart", icon: "bag" },
-  { label: "Account", href: "/account", icon: "user" },
+  { label: "Quote", href: "/contact", icon: "quote", action: "quote" },
 ];

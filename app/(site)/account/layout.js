@@ -13,7 +13,7 @@ export default async function AccountLayout({ children }) {
   return (
     <PageContainer className="bh-section">
       <AccountNav />
-      <div className="mt-6">{children}</div>
+      <div className="bh-ui mt-6">{children}</div>
     </PageContainer>
   );
 }

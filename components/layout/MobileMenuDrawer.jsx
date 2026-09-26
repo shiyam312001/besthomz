@@ -18,7 +18,7 @@ function MobileNavSection({ item, items, onClose, viewAllLabel }) {
       <Link
         href={item.href}
         onClick={onClose}
-        className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-bh-charcoal hover:bg-bh-sage/70 bh-focus-ring"
+        className="bh-nav-link flex items-center justify-between rounded-xl px-3 py-3 text-bh-charcoal hover:bg-bh-sage/70 bh-focus-ring"
       >
         {item.label}
       </Link>
@@ -30,7 +30,7 @@ function MobileNavSection({ item, items, onClose, viewAllLabel }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-3 py-3 text-sm font-medium text-bh-charcoal bh-focus-ring"
+        className="bh-nav-link bh-nav-link-active flex w-full items-center justify-between px-3 py-3 text-bh-charcoal bh-focus-ring"
         aria-expanded={open}
       >
         {item.label}
@@ -43,7 +43,7 @@ function MobileNavSection({ item, items, onClose, viewAllLabel }) {
               <Link
                 href={child.href}
                 onClick={onClose}
-                className="block rounded-lg px-3 py-2.5 text-sm text-bh-charcoal hover:bg-bh-sage-muted/80 bh-focus-ring"
+                className="bh-nav-dropdown-item block rounded-lg px-3 py-2.5 font-normal text-bh-charcoal hover:bg-bh-sage-muted/80 bh-focus-ring"
               >
                 {child.label}
               </Link>
@@ -53,7 +53,7 @@ function MobileNavSection({ item, items, onClose, viewAllLabel }) {
             <Link
               href={item.href}
               onClick={onClose}
-              className="block rounded-lg px-3 py-2.5 text-xs font-semibold text-bh-green bh-focus-ring"
+              className="bh-nav-dropdown-cta block rounded-lg px-3 py-2.5 text-bh-green bh-focus-ring"
             >
               {viewAllLabel}
             </Link>
@@ -95,7 +95,7 @@ export function MobileMenuDrawer({ open, onClose, navMenus = {} }) {
     <>
       <div
         className={cn(
-          "fixed inset-0 z-[60] bg-bh-charcoal/40 transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-[60] bg-bh-charcoal/40 transition-opacity duration-300 lg:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={onClose}
@@ -107,7 +107,7 @@ export function MobileMenuDrawer({ open, onClose, navMenus = {} }) {
         aria-modal="true"
         aria-label="Main menu"
         className={cn(
-          "fixed inset-y-0 right-0 z-[70] flex w-[min(100%,20rem)] flex-col bg-bh-warm-white shadow-xl transition-transform duration-300 ease-out md:hidden",
+          "fixed inset-y-0 right-0 z-[70] flex w-[min(100%,20rem)] flex-col bg-bh-warm-white shadow-xl transition-transform duration-300 ease-out lg:hidden",
           open ? "translate-x-0" : "translate-x-full",
         )}
       >
@@ -137,7 +137,7 @@ export function MobileMenuDrawer({ open, onClose, navMenus = {} }) {
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-bh-charcoal hover:bg-bh-sage/70 bh-focus-ring"
+                    className="bh-nav-link flex items-center justify-between rounded-xl px-3 py-3 text-bh-charcoal hover:bg-bh-sage/70 bh-focus-ring"
                   >
                     {item.label}
                   </Link>

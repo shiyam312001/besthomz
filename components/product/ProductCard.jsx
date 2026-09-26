@@ -134,8 +134,8 @@ export function ProductCard({
         <Link href={href} className={cn("block min-h-[2.35rem] lg:min-h-[2.5rem]", isSearch && "w-full")}>
           <h3
             className={cn(
-              "line-clamp-2 font-display font-semibold leading-snug text-bh-charcoal hover:text-bh-green",
-              isGlassCard ? "text-[0.9375rem] md:text-[0.9375rem]" : "mt-1 text-base",
+              "line-clamp-2 font-sans font-semibold leading-snug text-bh-charcoal hover:text-bh-green",
+              isGlassCard ? "text-[length:var(--bh-text-body)]" : "mt-1 text-[length:var(--bh-text-body)]",
               (isCollection || isCategory || isSearch) && "mt-1",
             )}
           >
@@ -221,7 +221,7 @@ export function ProductCard({
           ) : isHome ? (
             <button
               type="button"
-              className="inline-flex min-h-[2.75rem] w-full items-center justify-center gap-1.5 rounded-full bg-white/95 px-3.5 py-2 text-[0.8125rem] font-semibold text-bh-green shadow-[0_4px_14px_rgba(27,61,47,0.08)] backdrop-blur-sm transition hover:bg-bh-sage-muted bh-focus-ring sm:text-xs lg:w-fit lg:min-h-0 lg:justify-start lg:py-1.5"
+              className="inline-flex min-h-[2.75rem] w-full items-center justify-center gap-1.5 rounded-full border border-white/70 bg-white/85 px-3.5 py-2 text-[0.8125rem] font-semibold text-bh-charcoal shadow-[0_6px_18px_rgba(27,61,47,0.08)] backdrop-blur-sm transition hover:bg-white bh-focus-ring max-lg:text-bh-charcoal sm:text-xs lg:w-fit lg:min-h-0 lg:justify-start lg:border-0 lg:bg-white/95 lg:py-1.5 lg:text-bh-green"
               onClick={(e) => {
                 e.preventDefault();
                 if (onGetQuote) onGetQuote();

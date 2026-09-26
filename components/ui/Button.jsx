@@ -42,7 +42,7 @@ export function Button({
 }) {
   const isDisabled = disabled || loading;
   const classes = cn(
-    "inline-flex items-center justify-center rounded-full font-medium transition-colors duration-200 bh-focus-ring",
+    "inline-flex items-center justify-center rounded-full font-sans font-medium transition-colors duration-200 bh-focus-ring text-[length:var(--bh-text-body)]",
     variants[variant] ?? variants.primary,
     sizes[size] ?? sizes.md,
     isDisabled && "pointer-events-none opacity-55",

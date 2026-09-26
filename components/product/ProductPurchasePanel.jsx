@@ -30,15 +30,15 @@ export function ProductPurchasePanel({ product, category }) {
   }, [product.slug, category?.slug, product.name, category]);
 
   return (
-    <div className="pb-20 md:pb-0">
+    <div className="bh-ui pb-20 md:pb-0">
       {category && (
         <Link href={`/furniture/${category.slug}`} className="text-xs font-semibold uppercase tracking-wide text-bh-green">
           {category.name}
         </Link>
       )}
-      <h1 className="mt-2 font-display text-3xl font-semibold text-bh-charcoal md:text-4xl">{product.name}</h1>
+      <h1 className="bh-product-title mt-2">{product.name}</h1>
       {product.short_description && (
-        <p className="mt-3 text-sm leading-relaxed text-bh-muted md:text-base">{product.short_description}</p>
+        <p className="mt-3 bh-type-body text-bh-muted">{product.short_description}</p>
       )}
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -95,8 +95,8 @@ export function ProductPurchasePanel({ product, category }) {
         </div>
       )}
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="inline-flex h-12 items-center rounded-full px-1 bh-glass-panel">
+      <div className="mt-8 flex flex-col gap-4">
+        <div className="inline-flex h-12 w-fit items-center self-center rounded-full px-1 bh-glass-panel lg:self-start">
           <button
             type="button"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
@@ -105,7 +105,9 @@ export function ProductPurchasePanel({ product, category }) {
           >
             <Minus className="h-4 w-4" />
           </button>
-          <span className="min-w-[2.5rem] text-center text-sm font-semibold text-bh-charcoal">{qty}</span>
+          <span className="min-w-[2.5rem] text-center text-[length:var(--bh-text-body)] font-semibold text-bh-charcoal">
+            {qty}
+          </span>
           <button
             type="button"
             onClick={() => setQty((q) => Math.min(99, q + 1))}
@@ -115,29 +117,32 @@ export function ProductPurchasePanel({ product, category }) {
             <Plus className="h-4 w-4" />
           </button>
         </div>
-        <button
-          type="button"
-          onClick={() => addToCart({ productId: product.id, quantity: qty })}
-          className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-bh-green px-6 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(27,61,47,0.22)] bh-focus-ring"
-        >
-          <ShoppingBag className="h-4 w-4" aria-hidden />
-          Add to Cart
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            openQuote({
-              productId: product.id,
-              productName: product.name,
-              quantity: qty,
-              customizationRequirement: `Colour: ${colour.label} · Size: ${size}`,
-            })
-          }
-          className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold text-bh-charcoal bh-glass-panel bh-focus-ring"
-        >
-          Get Quote
-          <ArrowRight className="h-4 w-4" aria-hidden />
-        </button>
+
+        <div className="flex flex-col gap-3 max-lg:gap-3.5 sm:flex-row sm:items-stretch sm:gap-3">
+          <button
+            type="button"
+            onClick={() => addToCart({ productId: product.id, quantity: qty })}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-bh-sage/95 px-6 font-semibold text-bh-green shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_8px_22px_rgba(27,61,47,0.08)] bh-focus-ring max-lg:h-14 max-lg:text-[0.9375rem] sm:flex-1 lg:h-12 lg:text-[length:var(--bh-text-body)]"
+          >
+            <ShoppingBag className="h-4 w-4 shrink-0 max-lg:h-[1.125rem] max-lg:w-[1.125rem]" aria-hidden />
+            Add to Cart
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              openQuote({
+                productId: product.id,
+                productName: product.name,
+                quantity: qty,
+                customizationRequirement: `Colour: ${colour.label} · Size: ${size}`,
+              })
+            }
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-bh-green px-6 font-semibold text-white shadow-[0_10px_28px_rgba(27,61,47,0.22)] bh-focus-ring max-lg:h-14 max-lg:text-[0.9375rem] sm:flex-1 lg:h-12 lg:text-[length:var(--bh-text-body)]"
+          >
+            Get Quote
+            <ArrowRight className="h-4 w-4 shrink-0 max-lg:h-[1.125rem] max-lg:w-[1.125rem]" aria-hidden />
+          </button>
+        </div>
       </div>
 
       <button

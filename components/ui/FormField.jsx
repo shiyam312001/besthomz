@@ -12,15 +12,15 @@ export function FormField({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label && (
-        <label htmlFor={htmlFor} className="text-sm font-medium text-bh-charcoal max-lg:text-[0.9375rem] lg:text-sm">
+        <label htmlFor={htmlFor} className="bh-type-body font-medium text-bh-charcoal">
           {label}
           {required && <span className="text-bh-green" aria-hidden> *</span>}
         </label>
       )}
       {children}
-      {hint && !error && <p className="text-xs text-bh-muted">{hint}</p>}
+      {hint && !error && <p className="bh-type-small text-bh-muted">{hint}</p>}
       {error && (
-        <p className="text-xs text-red-600" role="alert">
+        <p className="bh-type-small text-red-600" role="alert">
           {error}
         </p>
       )}
