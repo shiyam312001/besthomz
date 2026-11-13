@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Heart, Search, ShoppingBag } from "lucide-react";
+import { ArrowRight, Heart, Search, ShoppingBag, UserRound } from "lucide-react";
 import { mainNav } from "@/config/site";
 import { Logo } from "@/components/brand/Logo";
 import { HeaderNavDropdown } from "@/components/layout/HeaderNavDropdown";
@@ -103,6 +103,21 @@ function DesktopHeader({ navMenus }) {
               {cartCount > 9 ? "9+" : cartCount}
             </span>
           )}
+        </Link>
+
+        <Link
+          href="/login"
+          className="inline-flex items-center gap-1.5 rounded-full px-2 py-2 text-sm font-semibold text-bh-charcoal hover:bg-bh-sage/50 bh-focus-ring xl:px-3"
+          aria-label="Customer sign in"
+        >
+          <UserRound className="h-5 w-5" strokeWidth={1.75} />
+          <span className="hidden xl:inline">Sign in</span>
+        </Link>
+        <Link
+          href="/signup"
+          className="hidden rounded-full border border-bh-green/20 px-3 py-2 text-sm font-semibold text-bh-green hover:bg-bh-sage/50 bh-focus-ring xl:inline-flex"
+        >
+          Sign up
         </Link>
 
         <button

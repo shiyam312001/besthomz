@@ -7,27 +7,54 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { HomeFeaturedMobileCarousel } from "@/components/home/HomeFeaturedMobileCarousel";
 import { cn } from "@/lib/cn";
 
-const TABS = ["All", "Dining", "Bedroom", "Sofa", "Office", "Mattress", "New Arrivals"];
+const TABS = ["All", "Wardrobe", "Bedroom", "Sofa", "Office", "Mattress", "New Arrivals"];
+const TAB_TERMS = {
+  Wardrobe: ["wardrobe"],
+  Bedroom: ["bed", "dresser"],
+  Sofa: ["sofa"],
+  Office: ["office", "reception table", "visitor chair"],
+  Mattress: ["mattress"],
+};
 
 function matchesTab(product, tab) {
-  if (tab === "All") return true;
-  if (tab === "New Arrivals") return Boolean(product.is_new);
-  const cat = (product.categories?.name || product.category || "").toLowerCase();
-  const name = (product.name || "").toLowerCase();
-  const key = tab.toLowerCase();
-  if (key === "sofa") return cat.includes("sofa") || name.includes("sofa");
-  if (key === "mattress") return cat.includes("mattress") || name.includes("mattress");
-  return cat.includes(key) || name.includes(key);
+  if (tab === "All" || tab === "New Arrivals") return true;
+  const searchText = [
+    product.categories?.name,
+    product.category,
+    product.category_name,
+    product.name,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return (TAB_TERMS[tab] || [tab.toLowerCase()]).some((term) => searchText.includes(term));
+}
+
+function shuffleProducts(products) {
+  const shuffled = [...products];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
 }
 
 export function HomeFeaturedTabs({ products }) {
   const [active, setActive] = useState("All");
+  const [newArrivalProducts, setNewArrivalProducts] = useState([]);
   const filtered = useMemo(() => {
-    const list = (products || []).filter((p) => matchesTab(p, active));
+    const source = active === "New Arrivals" ? newArrivalProducts : products || [];
+    const list = source.filter((p) => matchesTab(p, active));
     return list.slice(0, 8);
-  }, [products, active]);
-  const display = filtered.length ? filtered : (products || []).slice(0, 8);
-  const displayDesktop = display.slice(0, 5);
+  }, [products, active, newArrivalProducts]);
+  const displayDesktop = filtered.slice(0, 5);
+
+  function handleTabChange(tab) {
+    setActive(tab);
+    if (tab === "New Arrivals") {
+      setNewArrivalProducts(shuffleProducts(products || []));
+    }
+  }
 
   return (
     <div>
@@ -46,7 +73,36 @@ export function HomeFeaturedTabs({ products }) {
           </Link>
         </div>
 
-        <HomeFeaturedMobileCarousel products={display} />
+        <div
+          className="mb-3 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          role="group"
+          aria-label="Featured product categories"
+        >
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => handleTabChange(tab)}
+              aria-pressed={active === tab}
+              className={cn(
+                "shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold bh-focus-ring",
+                active === tab
+                  ? "bg-bh-green text-white"
+                  : "bg-bh-sage/50 text-bh-muted hover:bg-bh-sage",
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {filtered.length ? (
+          <HomeFeaturedMobileCarousel products={filtered} />
+        ) : (
+          <p className="rounded-2xl p-6 text-center text-sm text-bh-muted bh-glass-panel">
+            No products found for {active}.
+          </p>
+        )}
       </div>
 
       {/* Desktop — unchanged */}
@@ -63,7 +119,7 @@ export function HomeFeaturedTabs({ products }) {
                 <button
                   key={tab}
                   type="button"
-                  onClick={() => setActive(tab)}
+                  onClick={() => handleTabChange(tab)}
                   className={cn(
                     "relative shrink-0 pb-3 text-sm bh-focus-ring transition",
                     active === tab
@@ -88,7 +144,13 @@ export function HomeFeaturedTabs({ products }) {
           </div>
         </div>
 
-        <ProductGrid products={displayDesktop} className="lg:grid-cols-5" cardVariant="home" />
+        {displayDesktop.length ? (
+          <ProductGrid products={displayDesktop} className="lg:grid-cols-5" cardVariant="home" />
+        ) : (
+          <p className="rounded-2xl p-8 text-center text-sm text-bh-muted bh-glass-panel">
+            No products found for {active}.
+          </p>
+        )}
       </div>
     </div>
   );

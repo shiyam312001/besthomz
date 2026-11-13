@@ -146,7 +146,23 @@ export function MobileMenuDrawer({ open, onClose, navMenus = {} }) {
             ))}
           </ul>
         </nav>
-        <div className="border-t border-black/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="space-y-3 border-t border-black/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <div className="grid grid-cols-2 gap-2">
+            <Link
+              href="/login"
+              onClick={onClose}
+              className="inline-flex h-10 items-center justify-center rounded-full border border-bh-green/20 text-sm font-semibold text-bh-green bh-focus-ring"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/signup"
+              onClick={onClose}
+              className="inline-flex h-10 items-center justify-center rounded-full bg-bh-sage text-sm font-semibold text-bh-green bh-focus-ring"
+            >
+              Sign up
+            </Link>
+          </div>
           <Button
             className="w-full"
             onClick={() => {

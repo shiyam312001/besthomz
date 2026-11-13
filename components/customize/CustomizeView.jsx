@@ -5,11 +5,11 @@ import { CustomizeInspired } from "@/components/customize/CustomizeInspired";
 import { CustomizeHowWorks } from "@/components/customize/CustomizeHowWorks";
 import { CustomizeBottomCta } from "@/components/customize/CustomizeBottomCta";
 
-export function CustomizeView() {
+export function CustomizeView({ categories = [] }) {
   return (
     <div className="bg-bh-warm-white">
       <CustomizeHero />
-      <CustomizeConfigurator />
+      <CustomizeConfigurator categories={categories} />
       <CustomizeHelp />
       <CustomizeInspired />
       <CustomizeHowWorks />

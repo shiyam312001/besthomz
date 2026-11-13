@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import {
   ArrowLeft,
@@ -17,9 +17,15 @@ import { clearCart, removeFromCart, setCartItemQuantity } from "@/app/actions/ca
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useQuote } from "@/components/providers/QuoteProvider";
 import { useCommerce } from "@/components/providers/CommerceProvider";
+import { useToast } from "@/components/providers/ToastProvider";
 import { CHECKOUT_ENABLED } from "@/config/pricing";
 import { pickPrimaryImage, mapProductForCard } from "@/lib/utils/product-helpers";
-import { getGuestWishlistSlugs } from "@/lib/commerce/client-storage";
+import {
+  clearGuestCart,
+  getGuestWishlistSlugs,
+  removeGuestCartItem,
+  setGuestCartItemQuantity,
+} from "@/lib/commerce/client-storage";
 import { CartRecommendations } from "@/components/cart/CartRecommendations";
 import { CommerceBottomCta } from "@/components/commerce/CommerceBottomCta";
 import { cn } from "@/lib/cn";
@@ -33,21 +39,15 @@ export function CartView({ cart, onChanged }) {
   const [pending, startTransition] = useTransition();
   const [coupon, setCoupon] = useState("");
   const [couponNote, setCouponNote] = useState("");
-  const [selected, setSelected] = useState(() => new Set());
   const { openQuote } = useQuote();
   const { toggleWishlist } = useCommerce();
+  const { toast } = useToast();
   const items = cart?.cart_items || [];
+  const [selectedIds, setSelectedIds] = useState(null);
+  const selected = selectedIds || new Set(items.map((line) => line.id));
 
   const totalQty = items.reduce((sum, line) => sum + (line.quantity || 0), 0);
   const itemCount = items.length;
-
-  useEffect(() => {
-    if (!items.length) {
-      setSelected(new Set());
-      return;
-    }
-    setSelected(new Set(items.map((line) => line.id)));
-  }, [items.map((l) => l.id).join(",")]);
 
   if (!items.length) {
     return (
@@ -69,7 +69,7 @@ export function CartView({ cart, onChanged }) {
     );
   }
 
-  const allSelected = selected.size === items.length;
+  const allSelected = items.every((line) => selected.has(line.id));
 
   const quoteLines = items.filter((line) => selected.has(line.id));
 
@@ -84,8 +84,8 @@ export function CartView({ cart, onChanged }) {
   const excludeSlugs = items.map((l) => l.products?.slug).filter(Boolean);
 
   function toggleSelect(id) {
-    setSelected((prev) => {
-      const next = new Set(prev);
+    setSelectedIds((current) => {
+      const next = new Set(current || items.map((line) => line.id));
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
@@ -93,8 +93,7 @@ export function CartView({ cart, onChanged }) {
   }
 
   function toggleSelectAll() {
-    if (allSelected) setSelected(new Set());
-    else setSelected(new Set(items.map((l) => l.id)));
+    setSelectedIds(allSelected ? new Set() : null);
   }
 
   return (
@@ -111,9 +110,14 @@ export function CartView({ cart, onChanged }) {
               disabled={pending}
               onClick={() =>
                 startTransition(async () => {
-                  await clearCart();
-                  setSelected(new Set());
-                  onChanged?.();
+                  clearGuestCart();
+                  try {
+                    const result = await clearCart();
+                    if (!result.ok) toast(result.error || "Could not clear cart");
+                  } finally {
+                    setSelectedIds(new Set());
+                    onChanged?.();
+                  }
                 })
               }
               className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-red-600/90 bh-glass-subtle bh-focus-ring disabled:opacity-60"
@@ -180,7 +184,8 @@ export function CartView({ cart, onChanged }) {
                           className="inline-flex items-center gap-1.5 text-bh-muted transition hover:text-red-600 bh-focus-ring"
                           onClick={() =>
                             startTransition(async () => {
-                              await removeFromCart(line.id);
+                              if (line.is_guest_import) removeGuestCartItem(slug);
+                              else await removeFromCart(line.id);
                               onChanged?.();
                             })
                           }
@@ -213,7 +218,8 @@ export function CartView({ cart, onChanged }) {
                           aria-label="Decrease quantity"
                           onClick={() =>
                             startTransition(async () => {
-                              await setCartItemQuantity(line.id, line.quantity - 1);
+                              if (line.is_guest_import) setGuestCartItemQuantity(slug, line.quantity - 1);
+                              else await setCartItemQuantity(line.id, line.quantity - 1);
                               onChanged?.();
                             })
                           }
@@ -230,7 +236,8 @@ export function CartView({ cart, onChanged }) {
                           aria-label="Increase quantity"
                           onClick={() =>
                             startTransition(async () => {
-                              await setCartItemQuantity(line.id, line.quantity + 1);
+                              if (line.is_guest_import) setGuestCartItemQuantity(slug, line.quantity + 1);
+                              else await setCartItemQuantity(line.id, line.quantity + 1);
                               onChanged?.();
                             })
                           }

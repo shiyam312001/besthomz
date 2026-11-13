@@ -1,7 +1,8 @@
 import { PageContainer } from "@/components/layout/PageContainer";
 import { CategoryCard } from "@/components/product/CategoryCard";
 import { fetchActiveCategories } from "@/lib/catalog/categories";
-import { fetchFeaturedProducts } from "@/lib/catalog/products";
+import { fetchActiveProducts } from "@/lib/catalog/products";
+import { loadProductsImport } from "@/lib/catalog/load-import";
 import { fetchActiveRooms } from "@/lib/catalog/rooms";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeTrustVision } from "@/components/home/HomeTrustVision";
@@ -21,7 +22,7 @@ import { Fragment } from "react";
 export async function HomeView() {
   const [categories, featured, rooms] = await Promise.all([
     fetchActiveCategories(),
-    fetchFeaturedProducts(12),
+    fetchActiveProducts({ limit: loadProductsImport().length }),
     fetchActiveRooms(),
   ]);
 

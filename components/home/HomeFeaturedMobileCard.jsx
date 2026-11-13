@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Heart } from "lucide-react";
+import { ArrowRight, Heart, ShoppingBag } from "lucide-react";
 import { useQuote } from "@/components/providers/QuoteProvider";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { getGuestWishlistSlugs } from "@/lib/commerce/client-storage";
+import { formatInrFromRupees } from "@/lib/commerce/money";
 import { cn } from "@/lib/cn";
 
 /** Mobile & tablet featured tile — matches homepage mock (lg+ uses ProductCard). */
@@ -15,12 +16,16 @@ export function HomeFeaturedMobileCard({
   image,
   href = "#",
   badge,
+  price,
+  priceUncertain = true,
   className,
 }) {
   const { openQuote } = useQuote();
-  const { toggleWishlist } = useCommerce();
+  const { addToCart, toggleWishlist } = useCommerce();
   const slug = href?.replace("/product/", "") || "";
   const saved = slug && getGuestWishlistSlugs().includes(slug);
+  const numericPrice = Number(price);
+  const hasPrice = Number.isFinite(numericPrice) && numericPrice > 0;
 
   const showFeaturedBadge = badge === "featured" || badge === "new";
 
@@ -40,7 +45,7 @@ export function HomeFeaturedMobileCard({
           alt={name}
           fill
           sizes="(max-width: 1024px) 46vw, 20vw"
-          className="object-contain p-2.5"
+          className="object-cover"
         />
         {showFeaturedBadge && (
           <span
@@ -71,14 +76,39 @@ export function HomeFeaturedMobileCard({
             {name}
           </h3>
         </Link>
-        <button
-          type="button"
-          className="mt-2 inline-flex h-9 w-full items-center justify-center gap-1 rounded-full bg-bh-sage/90 px-2 text-[length:var(--bh-text-small)] font-semibold text-bh-green shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bh-focus-ring"
-          onClick={() => openQuote({ productId: id, productName: name })}
-        >
-          Get Quote
-          <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
-        </button>
+        <div className="mt-2 flex items-center justify-between gap-1 rounded-lg bg-bh-sage/45 px-2.5 py-1.5">
+          <div className="min-w-0">
+            <p className="text-[9px] font-medium uppercase tracking-wide text-bh-muted">
+              {hasPrice ? "Listed price" : "Price"}
+            </p>
+            <p className="text-xs font-bold text-bh-charcoal">
+              {hasPrice ? formatInrFromRupees(numericPrice) : "On request"}
+            </p>
+          </div>
+          {hasPrice && priceUncertain && (
+            <span className="text-right text-[9px] leading-tight text-bh-muted">
+              Confirm price
+            </span>
+          )}
+        </div>
+        <div className="mt-2 grid gap-2">
+          <button
+            type="button"
+            className="inline-flex h-9 w-full items-center justify-center gap-1 rounded-full bg-bh-sage/90 px-2 text-[length:var(--bh-text-small)] font-semibold text-bh-green shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bh-focus-ring"
+            onClick={() => openQuote({ productId: id, productName: name })}
+          >
+            Get Quote
+            <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-9 w-full items-center justify-center gap-1 rounded-full bg-bh-green px-2 text-[length:var(--bh-text-small)] font-semibold text-white bh-focus-ring"
+            onClick={() => addToCart({ productId: id })}
+          >
+            <ShoppingBag className="h-3.5 w-3.5 shrink-0" aria-hidden />
+            Add to Cart
+          </button>
+        </div>
       </div>
     </article>
   );

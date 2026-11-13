@@ -19,10 +19,12 @@ export function ProductGallery({ product, productName, isNew, productId, slug, i
   );
 
   const [index, setIndex] = useState(0);
+  const slidesSignature = slides.map((s) => s.image_url).join("|");
 
   useEffect(() => {
-    setIndex(0);
-  }, [product?.slug, slides.map((s) => s.image_url).join("|")]);
+    const frame = requestAnimationFrame(() => setIndex(0));
+    return () => cancelAnimationFrame(frame);
+  }, [product?.slug, slidesSignature]);
 
   const safeIndex = slides.length ? Math.min(index, slides.length - 1) : 0;
   const current = slides[safeIndex];

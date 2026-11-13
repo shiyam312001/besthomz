@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Search, Heart, ShoppingBag } from "lucide-react";
+import { Menu, Search, Heart, ShoppingBag, UserRound } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { useCommerce } from "@/components/providers/CommerceProvider";
@@ -47,6 +47,13 @@ export function MobileHeader({ scrolled, onMenuOpen, menuOpen = false }) {
               {cartCount > 9 ? "9+" : cartCount}
             </span>
           )}
+        </Link>
+        <Link
+          href="/login"
+          className="rounded-full p-2.5 text-bh-charcoal hover:bg-bh-sage/60 bh-focus-ring"
+          aria-label="Customer sign in"
+        >
+          <UserRound className="h-5 w-5" strokeWidth={1.75} />
         </Link>
         <button
           type="button"

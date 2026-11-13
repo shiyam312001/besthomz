@@ -17,12 +17,34 @@ export const CUSTOMIZE_HERO_FEATURES = [
 ];
 
 export const PRODUCT_CATEGORIES = [
-  { id: "sofa", label: "Sofa", icon: "sofa" },
-  { id: "bed", label: "Bed", icon: "bed" },
-  { id: "dining-table", label: "Dining Table", icon: "table" },
-  { id: "dining-chair", label: "Dining Chair", icon: "chair" },
-  { id: "office-chair", label: "Office Chair", icon: "office-chair" },
-  { id: "office-table", label: "Office Table", icon: "desk" },
+  { id: "avalon-mattress", label: "Avalon Mattress" },
+  { id: "bar-chairs", label: "Bar Chair" },
+  { id: "beds-5ft", label: "Bed 5Ft" },
+  { id: "beds-6ft", label: "Bed 6Ft" },
+  { id: "bedroom-sets", label: "Bed Room Set" },
+  { id: "bookshelves", label: "Book Shelf" },
+  { id: "coat-hangers", label: "Coat Hanger" },
+  { id: "coffee-tables", label: "Coffee Table" },
+  { id: "consoles", label: "Console" },
+  { id: "dining-chairs", label: "Dining Chair" },
+  { id: "dressers", label: "Dresser" },
+  { id: "dining-sets-4-seater", label: "Dining Set 4 Seater" },
+  { id: "dining-sets-6-seater", label: "Dining Set 6 Seater" },
+  { id: "dining-sets-8-seater", label: "Dining Set 8 Seater" },
+  { id: "massager-chairs", label: "Massager Chair" },
+  { id: "office-chairs", label: "Office Chair" },
+  { id: "office-tables", label: "Office Table" },
+  { id: "others", label: "Others" },
+  { id: "outdoor", label: "Outdoor" },
+  { id: "reception-tables", label: "Reception Table" },
+  { id: "shoe-racks", label: "Shoe Rack" },
+  { id: "side-tables", label: "Side Table" },
+  { id: "sofas", label: "Sofa" },
+  { id: "swings", label: "Swing" },
+  { id: "trolleys", label: "Trolley" },
+  { id: "tv-units", label: "TV Unit" },
+  { id: "visitor-chairs", label: "Visitor Chair" },
+  { id: "wardrobes", label: "Wardrobe" },
 ];
 
 export const SOFA_STYLES = [
@@ -34,91 +56,128 @@ export const SOFA_STYLES = [
   { id: "sofa-bed", name: "Sofa Cum Bed", image: `${SOFA_STYLE_BASE}/038-sofa-cum-bed.png` },
 ];
 
-const CAT_IMG = {
-  bed: "/BestHomz/Homepage/categories/05-category-bed.png",
-  diningTable: "/BestHomz/Homepage/categories/02-category-dining-table.png",
-  diningChair: "/BestHomz/Homepage/categories/03-category-dining-chair.png",
-  officeChair: "/BestHomz/Homepage/categories/08-category-office-chair.png",
-  officeTable: "/BestHomz/Homepage/categories/09-category-office-table.png",
-};
-
 function styleRow(id, name, image) {
   return { id, name, image };
 }
 
-export const CATEGORY_CONFIG = {
-  sofa: {
-    typeTitle: "Select Sofa Type",
-    styles: SOFA_STYLES,
-    sizes: ["2 Seater", "3 Seater", "L Shape", "Custom Size"],
-  },
-  bed: {
-    typeTitle: "Select Bed Type",
-    styles: [
-      styleRow("single", "Single", CAT_IMG.bed),
-      styleRow("queen", "Queen", CAT_IMG.bed),
-      styleRow("king", "King", CAT_IMG.bed),
-      styleRow("storage", "Storage Bed", CAT_IMG.bed),
-      styleRow("bunk", "Bunk Bed", CAT_IMG.bed),
-      styleRow("custom-bed", "Custom", CAT_IMG.bed),
-    ],
-    sizes: ["Single", "Queen", "King", "Custom Size"],
-  },
-  "dining-table": {
-    typeTitle: "Select Dining Table Type",
-    styles: [
-      styleRow("4-seater", "4 Seater", CAT_IMG.diningTable),
-      styleRow("6-seater", "6 Seater", CAT_IMG.diningTable),
-      styleRow("8-seater", "8 Seater", CAT_IMG.diningTable),
-      styleRow("round", "Round Table", CAT_IMG.diningTable),
-      styleRow("extendable", "Extendable", CAT_IMG.diningTable),
-      styleRow("custom-table", "Custom", CAT_IMG.diningTable),
-    ],
-    sizes: ["4 Seater", "6 Seater", "8 Seater", "Custom Size"],
-  },
-  "dining-chair": {
-    typeTitle: "Select Dining Chair Type",
-    styles: [
-      styleRow("standard", "Standard", CAT_IMG.diningChair),
-      styleRow("upholstered", "Upholstered", CAT_IMG.diningChair),
-      styleRow("armchair", "Armchair", CAT_IMG.diningChair),
-      styleRow("bench", "Bench", CAT_IMG.diningChair),
-      styleRow("bar-stool", "Bar Stool", CAT_IMG.diningChair),
-      styleRow("custom-chair", "Custom", CAT_IMG.diningChair),
-    ],
-    sizes: ["Standard", "Counter Height", "Bar Height", "Custom"],
-  },
-  "office-chair": {
-    typeTitle: "Select Office Chair Type",
-    styles: [
-      styleRow("task", "Task Chair", CAT_IMG.officeChair),
-      styleRow("executive", "Executive", CAT_IMG.officeChair),
-      styleRow("ergonomic", "Ergonomic", CAT_IMG.officeChair),
-      styleRow("mesh", "Mesh Back", CAT_IMG.officeChair),
-      styleRow("visitor", "Visitor", CAT_IMG.officeChair),
-      styleRow("custom-oc", "Custom", CAT_IMG.officeChair),
-    ],
-    sizes: ["Standard", "High Back", "Custom"],
-  },
-  "office-table": {
-    typeTitle: "Select Office Table Type",
-    styles: [
-      styleRow("desk", "Work Desk", CAT_IMG.officeTable),
-      styleRow("l-desk", "L-Desk", CAT_IMG.officeTable),
-      styleRow("conference", "Conference", CAT_IMG.officeTable),
-      styleRow("standing", "Standing Desk", CAT_IMG.officeTable),
-      styleRow("meeting", "Meeting Table", CAT_IMG.officeTable),
-      styleRow("custom-ot", "Custom", CAT_IMG.officeTable),
-    ],
-    sizes: ["120 cm", "140 cm", "160 cm", "Custom Size"],
-  },
+const LEGACY_CATEGORY_IDS = {
+  sofa: "sofas",
+  bed: "beds-5ft",
+  "dining-table": "dining-sets-4-seater",
+  "dining-chair": "dining-chairs",
+  "office-chair": "office-chairs",
+  "office-table": "office-tables",
 };
 
-export function getCategoryConfig(categoryId) {
-  return CATEGORY_CONFIG[categoryId] ?? CATEGORY_CONFIG.sofa;
+const CATEGORY_LABELS = {
+  ds4: "Dining Set 4 Seater",
+  ds6: "Dining Set 6 Seater",
+  ds8: "Dining Set 8 Seater",
+  "dining-sets-4-seater": "Dining Set 4 Seater",
+  "dining-sets-6-seater": "Dining Set 6 Seater",
+  "dining-sets-8-seater": "Dining Set 8 Seater",
+  trolly: "Trolley",
+  "tv unit": "TV Unit",
+};
+
+export function getCustomizeCategoryLabel(categoryId, name) {
+  return CATEGORY_LABELS[categoryId?.toLowerCase()] ||
+    CATEGORY_LABELS[name?.toLowerCase()] ||
+    name ||
+    categoryId;
 }
 
-export const MATERIAL_OPTIONS = ["Fabric", "Leather", "Solid Wood", "Engineered Wood"];
+export function resolveCategoryId(categoryId, categories = PRODUCT_CATEGORIES) {
+  const resolvedId = LEGACY_CATEGORY_IDS[categoryId] || categoryId;
+  return categories.some((category) => category.id === resolvedId)
+    ? resolvedId
+    : categories[0]?.id || "sofas";
+}
+
+function optionStyles(names, image) {
+  return names.map((name) =>
+    styleRow(name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, image),
+  );
+}
+
+export function getCategoryConfig(categoryId, category = {}) {
+  const name = getCustomizeCategoryLabel(
+    categoryId,
+    category.name || PRODUCT_CATEGORIES.find((item) => item.id === categoryId)?.label,
+  );
+  const descriptor = `${categoryId} ${name}`.toLowerCase();
+  const image = category.image_url || CUSTOMIZE_IMAGES.preview;
+
+  if (descriptor.includes("sofa")) {
+    return {
+      typeTitle: "Select Sofa Type",
+      styles: SOFA_STYLES,
+      sizes: ["2 Seater", "3 Seater", "L Shape", "Custom Size"],
+    };
+  }
+  if (descriptor.includes("mattress")) {
+    return {
+      typeTitle: "Select Mattress Type",
+      styles: optionStyles(["Foam", "Spring", "Orthopedic", "Custom"], image),
+      sizes: ["Single", "Double", "Queen", "King", "Custom Size"],
+    };
+  }
+  if (descriptor.includes("bed")) {
+    return {
+      typeTitle: `Select ${name} Type`,
+      styles: optionStyles(["Panel Bed", "Storage Bed", "Upholstered", "Custom"], image),
+      sizes: ["Single", "Queen", "King", "Custom Size"],
+    };
+  }
+  if (descriptor.includes("chair")) {
+    return {
+      typeTitle: `Select ${name} Type`,
+      styles: optionStyles(["Standard", "Upholstered", "With Armrests", "Custom"], image),
+      sizes: ["Standard", "Counter Height", "Bar Height", "Custom Size"],
+    };
+  }
+  if (/(dining-set|table|console|trolley|unit)/.test(descriptor)) {
+    const diningSeater = descriptor.match(/(4|6|8)-seater/);
+    return {
+      typeTitle: `Select ${name} Type`,
+      styles: optionStyles(["Rectangular", "Round", "Extendable", "Custom"], image),
+      sizes: diningSeater
+        ? [`${diningSeater[1]} Seater`, "Custom Size"]
+        : ["Compact", "Standard", "Large", "Custom Size"],
+    };
+  }
+  if (/(shelf|hanger|dresser|shoe rack|wardrobe|storage)/.test(descriptor)) {
+    return {
+      typeTitle: `Select ${name} Type`,
+      styles: optionStyles(["Compact", "Shelved", "With Doors", "Custom"], image),
+      sizes: ["Compact", "Standard", "Large", "Custom Size"],
+    };
+  }
+  if (/(outdoor|swing)/.test(descriptor)) {
+    return {
+      typeTitle: `Select ${name} Type`,
+      styles: optionStyles(["Classic", "Contemporary", "Weather-resistant", "Custom"], image),
+      sizes: ["Single", "Two Seater", "Three Seater", "Custom Size"],
+    };
+  }
+  return {
+    typeTitle: `Select ${name} Configuration`,
+    styles: optionStyles(["Modern", "Classic", "Compact", "Custom"], image),
+    sizes: ["Compact", "Standard", "Large", "Custom Size"],
+  };
+}
+
+export const MATERIAL_OPTIONS = [
+  "Solid Wood",
+  "Engineered Wood",
+  "Metal",
+  "Glass",
+  "Fabric",
+  "Leather",
+  "Rattan",
+  "Mixed Materials",
+  "Custom",
+];
 export const COLOUR_SWATCHES = [
   { label: "Beige", hex: "#D4C4A8" },
   { label: "Grey", hex: "#9CA3AF" },
@@ -126,7 +185,7 @@ export const COLOUR_SWATCHES = [
   { label: "Brown", hex: "#8B6914" },
   { label: "Custom", hex: "#E8E4DC" },
 ];
-export const FINISH_OPTIONS = ["Matte", "Gloss", "Natural", "Textured"];
+export const FINISH_OPTIONS = ["Matte", "Gloss", "Natural", "Textured", "Painted", "Custom"];
 
 export const HOW_CUSTOMIZE = [
   { num: "01", title: "Choose Product", text: "Pick a category and configuration." },

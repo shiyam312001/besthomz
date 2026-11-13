@@ -20,6 +20,18 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## HTC product catalog
+
+The storefront catalog is generated from `data/HTC_BestHomz_Product_Catalog_Details.csv` and images in `public/Products`.
+
+```bash
+npm run catalog:map
+npm run catalog:validate
+npm run catalog:import
+```
+
+`catalog:import` requires `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in the local environment or `.env.local`. It creates or updates catalog categories and products, refreshes mapped images and specifications, and marks active products missing from the CSV as inactive. It does not delete product records or order history.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

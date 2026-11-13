@@ -1,30 +1,50 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { addToCart as addToCartAction } from "@/app/actions/cart";
 import { addToWishlist as addToWishlistAction, removeFromWishlist } from "@/app/actions/wishlist";
-import { toggleGuestWishlistSlug, getGuestWishlistSlugs } from "@/lib/commerce/client-storage";
+import {
+  addGuestCartItem,
+  getGuestCartCount,
+  getGuestWishlistSlugs,
+  subscribeGuestCart,
+  toggleGuestWishlistSlug,
+} from "@/lib/commerce/client-storage";
 import { useToast } from "@/components/providers/ToastProvider";
 
 const CommerceContext = createContext(null);
 
 export function CommerceProvider({ children, initialCartCount = 0, initialWishlistCount = 0 }) {
   const { toast } = useToast();
-  const [cartCount, setCartCount] = useState(initialCartCount);
-  const [wishlistCount, setWishlistCount] = useState(initialWishlistCount);
-
-  useEffect(() => {
-    setWishlistCount(getGuestWishlistSlugs().length);
-  }, []);
+  const [serverCartCount, setServerCartCount] = useState(initialCartCount);
+  const guestCartCount = useSyncExternalStore(subscribeGuestCart, getGuestCartCount, () => 0);
+  const cartCount = serverCartCount + guestCartCount;
+  const setCartCount = useCallback(
+    (totalCount) => setServerCartCount(Math.max(0, totalCount - getGuestCartCount())),
+    [],
+  );
+  const [wishlistCount, setWishlistCount] = useState(() =>
+    Math.max(initialWishlistCount, getGuestWishlistSlugs().length),
+  );
 
   const addToCart = useCallback(
     async ({ productId }) => {
+      const importedProductSlug =
+        typeof productId === "string" && productId.startsWith("import-")
+          ? productId.slice("import-".length)
+          : "";
+      if (/^[a-z0-9][a-z0-9-]*$/.test(importedProductSlug)) {
+        addGuestCartItem(importedProductSlug);
+        toast("Added to cart");
+        return { ok: true, guest: true };
+      }
+
       const result = await addToCartAction({ productId, quantity: 1 });
       if (!result.ok) {
         toast(result.error || "Could not add to cart");
         return result;
       }
-      setCartCount((c) => c + 1);
+      setServerCartCount((count) => count + 1);
       toast("Added to cart");
       return result;
     },
@@ -69,7 +89,7 @@ export function CommerceProvider({ children, initialCartCount = 0, initialWishli
 
   const value = useMemo(
     () => ({ cartCount, wishlistCount, setCartCount, setWishlistCount, addToCart, toggleWishlist }),
-    [cartCount, wishlistCount, addToCart, toggleWishlist],
+    [cartCount, wishlistCount, setCartCount, addToCart, toggleWishlist],
   );
 
   return <CommerceContext.Provider value={value}>{children}</CommerceContext.Provider>;

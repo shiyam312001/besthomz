@@ -22,9 +22,11 @@ import {
   CUSTOMIZE_IMAGES,
   CUSTOMIZE_STEPS,
   FINISH_OPTIONS,
+  getCustomizeCategoryLabel,
   getCategoryConfig,
   MATERIAL_OPTIONS,
   PRODUCT_CATEGORIES,
+  resolveCategoryId,
 } from "@/components/customize/customize-data";
 
 function OptionPills({ label, options, value, onChange }) {
@@ -97,7 +99,7 @@ function ConfiguratorFallback() {
   );
 }
 
-function CustomizeConfiguratorInner() {
+function CustomizeConfiguratorInner({ categories = [] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -105,17 +107,62 @@ function CustomizeConfiguratorInner() {
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
 
-  const [hydrated, setHydrated] = useState(false);
-  const didHydrateRef = useRef(false);
-  const [step, setStep] = useState(0);
-  const [category, setCategory] = useState("sofa");
-  const [styleId, setStyleId] = useState("3-seater");
-  const [size, setSize] = useState("3 Seater");
-  const [material, setMaterial] = useState(MATERIAL_OPTIONS[0]);
-  const [colour, setColour] = useState(COLOUR_SWATCHES[0].label);
-  const [finish, setFinish] = useState(FINISH_OPTIONS[0]);
+  const initialSeed = useMemo(() => {
+    const fromUrl = parseDesignFromSearchParams(searchParams);
+    const fromStorage = loadDesignFromStorage();
+    return fromUrl || fromStorage;
+  }, [searchParams]);
 
-  const categoryConfig = useMemo(() => getCategoryConfig(category), [category]);
+  const categoryOptions = useMemo(
+    () =>
+      categories.length
+        ? categories.map((item) => ({
+            ...item,
+            id: item.slug,
+            label: getCustomizeCategoryLabel(item.slug, item.name),
+          }))
+        : PRODUCT_CATEGORIES,
+    [categories],
+  );
+  const initialCategory = resolveCategoryId(initialSeed?.category || "sofa", categoryOptions);
+  const initialCategoryInfo = categoryOptions.find((item) => item.id === initialCategory);
+  const [step, setStep] = useState(0);
+  const [category, setCategory] = useState(initialCategory);
+  const [styleId, setStyleId] = useState(() => {
+    const cfg = getCategoryConfig(initialCategory, initialCategoryInfo);
+    const selected = initialSeed?.category
+      ? cfg.styles.some((s) => s.id === initialSeed.styleId)
+        ? initialSeed.styleId
+        : cfg.styles[0]?.id
+      : cfg.styles[0]?.id;
+    return selected ?? "";
+  });
+  const [size, setSize] = useState(() => {
+    const cfg = getCategoryConfig(initialCategory, initialCategoryInfo);
+    const seedSize = initialSeed?.size;
+    return seedSize && cfg.sizes.includes(seedSize) ? seedSize : cfg.sizes[0] ?? "";
+  });
+  const [material, setMaterial] = useState(
+    initialSeed?.material && MATERIAL_OPTIONS.includes(initialSeed.material)
+      ? initialSeed.material
+      : MATERIAL_OPTIONS[0],
+  );
+  const [colour, setColour] = useState(
+    initialSeed?.colour && COLOUR_SWATCHES.some((c) => c.label === initialSeed.colour)
+      ? initialSeed.colour
+      : COLOUR_SWATCHES[0].label,
+  );
+  const [finish, setFinish] = useState(
+    initialSeed?.finish && FINISH_OPTIONS.includes(initialSeed.finish)
+      ? initialSeed.finish
+      : FINISH_OPTIONS[0],
+  );
+
+  const activeCategory = categoryOptions.find((item) => item.id === category);
+  const categoryConfig = useMemo(
+    () => getCategoryConfig(category, activeCategory),
+    [category, activeCategory],
+  );
   const styles = categoryConfig.styles;
   const sizeOptions = categoryConfig.sizes;
 
@@ -124,7 +171,7 @@ function CustomizeConfiguratorInner() {
     [styles, styleId],
   );
 
-  const productLabel = PRODUCT_CATEGORIES.find((c) => c.id === category)?.label ?? "Sofa";
+  const productLabel = activeCategory?.label ?? activeCategory?.name ?? "Furniture";
 
   const previewImage = activeStyle?.image ?? CUSTOMIZE_IMAGES.preview;
 
@@ -150,38 +197,13 @@ function CustomizeConfiguratorInner() {
   );
 
   useEffect(() => {
-    if (didHydrateRef.current) return;
-    didHydrateRef.current = true;
-
-    const fromUrl = parseDesignFromSearchParams(searchParams);
-    const fromStorage = loadDesignFromStorage();
-    const seed = fromUrl || fromStorage;
-
-    if (seed?.category) {
-      const cfg = getCategoryConfig(seed.category);
-      const validStyle = cfg.styles.some((s) => s.id === seed.styleId)
-        ? seed.styleId
-        : cfg.styles[0]?.id;
-      const validSize = cfg.sizes.includes(seed.size) ? seed.size : cfg.sizes[0];
-
-      setCategory(seed.category);
-      setStyleId(validStyle);
-      setSize(validSize);
-      if (seed.material && MATERIAL_OPTIONS.includes(seed.material)) setMaterial(seed.material);
-      if (seed.colour && COLOUR_SWATCHES.some((c) => c.label === seed.colour)) setColour(seed.colour);
-      if (seed.finish && FINISH_OPTIONS.includes(seed.finish)) setFinish(seed.finish);
-    }
-    setHydrated(true);
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (!hydrated) return;
     const state = buildDesignState({ category, styleId, size, material, colour, finish });
     syncUrl(state);
-  }, [hydrated, category, styleId, size, material, colour, finish, syncUrl]);
+  }, [category, styleId, size, material, colour, finish, syncUrl]);
 
   function handleCategoryChange(nextCategory) {
-    const cfg = getCategoryConfig(nextCategory);
+    const nextCategoryInfo = categoryOptions.find((item) => item.id === nextCategory);
+    const cfg = getCategoryConfig(nextCategory, nextCategoryInfo);
     setCategory(nextCategory);
     setStyleId(cfg.styles[0]?.id ?? "");
     setSize(cfg.sizes[0] ?? "");
@@ -291,19 +313,38 @@ function CustomizeConfiguratorInner() {
             <aside className="lg:col-span-2">
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-bh-muted">Category</p>
               <ul className="space-y-1">
-                {PRODUCT_CATEGORIES.map((cat) => (
+                {categoryOptions.map((cat) => (
                   <li key={cat.id}>
                     <button
                       type="button"
                       onClick={() => handleCategoryChange(cat.id)}
+                      aria-pressed={category === cat.id}
                       className={cn(
-                        "w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium transition bh-focus-ring",
+                        "flex w-full items-center gap-2 rounded-xl px-2 py-2 text-left text-sm font-medium transition bh-focus-ring",
                         category === cat.id
                           ? "bg-bh-sage text-bh-green shadow-[0_4px_14px_rgba(27,61,47,0.08)]"
                           : "text-bh-muted hover:bg-bh-sage-muted/80 hover:text-bh-charcoal",
                       )}
                     >
-                      {cat.label}
+                      {cat.image_url ? (
+                        <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-bh-cream">
+                          <Image
+                            src={cat.image_url}
+                            alt=""
+                            fill
+                            sizes="36px"
+                            className="object-cover"
+                          />
+                        </span>
+                      ) : null}
+                      <span className="min-w-0 flex-1">
+                        <span className="block leading-tight">{cat.label}</span>
+                        {Number.isFinite(cat.product_count) && (
+                          <span className="mt-0.5 block text-[10px] font-normal text-bh-muted">
+                            {cat.product_count} products
+                          </span>
+                        )}
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -519,10 +560,10 @@ function CustomizeConfiguratorInner() {
   );
 }
 
-export function CustomizeConfigurator() {
+export function CustomizeConfigurator({ categories = [] }) {
   return (
     <Suspense fallback={<ConfiguratorFallback />}>
-      <CustomizeConfiguratorInner />
+      <CustomizeConfiguratorInner categories={categories} />
     </Suspense>
   );
 }

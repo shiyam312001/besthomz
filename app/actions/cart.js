@@ -5,6 +5,7 @@ import { createClientOptional } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getAuthUser } from "@/lib/auth/server";
 import { getOrCreateCartSessionId, getCartSessionId, clearCartSessionCookie } from "@/lib/session/cart-session";
+import { importProductsToRecords } from "@/lib/catalog/load-import";
 import {
   getActiveCartForUser,
   getActiveCartForSession,
@@ -17,6 +18,16 @@ import {
 
 function isUuid(id) {
   return typeof id === "string" && /^[0-9a-f-]{36}$/i.test(id);
+}
+
+export async function fetchImportedCartProducts(slugs) {
+  const requestedSlugs = new Set(
+    (Array.isArray(slugs) ? slugs : [])
+      .filter((slug) => typeof slug === "string" && /^[a-z0-9][a-z0-9-]*$/.test(slug))
+      .slice(0, 100),
+  );
+  if (requestedSlugs.size === 0) return [];
+  return importProductsToRecords().filter((product) => requestedSlugs.has(product.slug));
 }
 
 async function getUserClient() {

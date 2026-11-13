@@ -3,12 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Heart, ShoppingBag } from "lucide-react";
-import { SHOW_PRICES } from "@/config/pricing";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { useQuote } from "@/components/providers/QuoteProvider";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { getGuestWishlistSlugs } from "@/lib/commerce/client-storage";
+import { formatInrFromRupees } from "@/lib/commerce/money";
 import { cn } from "@/lib/cn";
 
 const badgeTone = {
@@ -28,6 +28,8 @@ export function ProductCard({
   href = "#",
   badge,
   colors = [],
+  price,
+  priceUncertain = true,
   className,
   variant = "default",
   onAddToCart,
@@ -38,6 +40,8 @@ export function ProductCard({
   const isCategory = variant === "category";
   const isSearch = variant === "search";
   const isGlassCard = isHome || isCollection || isCategory || isSearch;
+  const numericPrice = Number(price);
+  const hasPrice = Number.isFinite(numericPrice) && numericPrice > 0;
   const { openQuote } = useQuote();
   const { addToCart, toggleWishlist } = useCommerce();
   const slug = href?.replace("/product/", "") || "";
@@ -83,10 +87,7 @@ export function ProductCard({
           alt={name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-          className={cn(
-            "transition duration-500 group-hover:scale-[1.03]",
-            isGlassCard ? "object-contain p-3 md:p-4" : "object-cover",
-          )}
+          className="object-cover transition duration-500 group-hover:scale-[1.03]"
         />
         {badge && !isHome && (
           <Badge tone={badgeTone[badge] ?? "default"} className="absolute left-3 top-3">
@@ -165,9 +166,26 @@ export function ProductCard({
             ))}
           </div>
         )}
-        {SHOW_PRICES ? (
-          <p className="mt-3 text-sm font-semibold text-bh-charcoal">Price placeholder</p>
-        ) : null}
+        <div
+          className={cn(
+            "mt-3 flex items-center justify-between gap-2 rounded-xl bg-bh-sage/45 px-3 py-2",
+            isSearch && "w-full text-left",
+          )}
+        >
+          <div className="min-w-0">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-bh-muted">
+              {hasPrice ? "Listed price" : "Price"}
+            </p>
+            <p className="text-sm font-bold text-bh-charcoal">
+              {hasPrice ? formatInrFromRupees(numericPrice) : "On request"}
+            </p>
+          </div>
+          {hasPrice && priceUncertain && (
+            <span className="max-w-[7rem] text-right text-[10px] leading-tight text-bh-muted">
+              Confirm price
+            </span>
+          )}
+        </div>
 
         <div className={cn("mt-auto pt-3", isSearch && "w-full")}>
           {isSearch ? (
@@ -219,18 +237,28 @@ export function ProductCard({
               <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>
           ) : isHome ? (
-            <button
-              type="button"
-              className="inline-flex min-h-[2.75rem] w-full items-center justify-center gap-1.5 rounded-full border border-white/70 bg-white/85 px-3.5 py-2 text-[0.8125rem] font-semibold text-bh-charcoal shadow-[0_6px_18px_rgba(27,61,47,0.08)] backdrop-blur-sm transition hover:bg-white bh-focus-ring max-lg:text-bh-charcoal sm:text-xs lg:w-fit lg:min-h-0 lg:justify-start lg:border-0 lg:bg-white/95 lg:py-1.5 lg:text-bh-green"
-              onClick={(e) => {
-                e.preventDefault();
-                if (onGetQuote) onGetQuote();
-                else openQuote({ productId: id, productName: name });
-              }}
-            >
-              Get Quote
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-            </button>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                className="inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full bg-white/95 px-3.5 py-2 text-xs font-semibold text-bh-green shadow-[0_4px_14px_rgba(27,61,47,0.08)] transition hover:bg-bh-sage-muted bh-focus-ring"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onGetQuote) onGetQuote();
+                  else openQuote({ productId: id, productName: name });
+                }}
+              >
+                Get Quote
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={handleCart}
+                className="inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full bg-bh-green px-3.5 py-2 text-xs font-semibold text-white shadow-[0_6px_16px_rgba(27,61,47,0.2)] bh-focus-ring"
+              >
+                <ShoppingBag className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                <span>Add to Cart</span>
+              </button>
+            </div>
           ) : (
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button

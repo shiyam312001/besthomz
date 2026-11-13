@@ -17,9 +17,7 @@ export function HomeTestimonials() {
   const maxIndex = Math.max(total - visible, 0);
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    setIndex((i) => Math.min(i, maxIndex));
-  }, [maxIndex]);
+  const safeIndex = Math.min(index, maxIndex);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,7 +50,7 @@ export function HomeTestimonials() {
             className="flex transition-transform duration-700 ease-out"
             style={{
               width: `${(total / visible) * 100}%`,
-              transform: `translateX(-${(index * 100) / total}%)`,
+              transform: `translateX(-${(safeIndex * 100) / total}%)`,
             }}
           >
             {reviews.map((review) => (
@@ -92,11 +90,11 @@ export function HomeTestimonials() {
             <button
               key={i}
               type="button"
-              onClick={() => setIndex(i)}
+              onClick={() => setIndex(Math.min(i, maxIndex))}
               aria-label={`Go to review ${i + 1}`}
-              aria-current={i === index}
+              aria-current={i === safeIndex}
               className={`h-2 rounded-full transition-all bh-focus-ring ${
-                i === index ? "w-6 bg-bh-green" : "w-2 bg-bh-green/25 hover:bg-bh-green/40"
+                i === safeIndex ? "w-6 bg-bh-green" : "w-2 bg-bh-green/25 hover:bg-bh-green/40"
               }`}
             />
           ))}

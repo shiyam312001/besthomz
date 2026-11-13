@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { CategoryView } from "@/components/furniture/category/CategoryView";
 import { fetchCategoryBySlug, fetchActiveCategories } from "@/lib/catalog/categories";
 import { fetchProductsByCategorySlug } from "@/lib/catalog/products";
+import { loadProductsImport } from "@/lib/catalog/load-import";
 
 export async function generateMetadata({ params }) {
   const { category } = await params;
@@ -18,8 +19,11 @@ export default async function CategoryPage({ params }) {
   const category = await fetchCategoryBySlug(categorySlug);
   if (!category) notFound();
 
+  const categoryProductCount = loadProductsImport().filter(
+    (product) => product.category_slug === categorySlug,
+  ).length;
   const [products, categories] = await Promise.all([
-    fetchProductsByCategorySlug(categorySlug, { limit: 100 }),
+    fetchProductsByCategorySlug(categorySlug, { limit: categoryProductCount }),
     fetchActiveCategories(),
   ]);
 

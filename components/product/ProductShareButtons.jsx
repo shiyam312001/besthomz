@@ -1,21 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Share2, MessageCircle } from "lucide-react";
 import { productEnquiryMessage, whatsAppHref } from "@/lib/utils/whatsapp";
 import { useToast } from "@/components/providers/ToastProvider";
 
 export function ProductShareButtons({ productName, productUrl }) {
   const { toast } = useToast();
-  const [clientUrl, setClientUrl] = useState(productUrl ?? "");
 
-  useEffect(() => {
-    if (!productUrl && typeof window !== "undefined") {
-      setClientUrl(window.location.href);
-    }
-  }, [productUrl]);
-
-  const shareUrl = productUrl || clientUrl;
+  const shareUrl = useMemo(
+    () => productUrl || (typeof window !== "undefined" ? window.location.href : ""),
+    [productUrl],
+  );
 
   async function share() {
     const url = shareUrl || (typeof window !== "undefined" ? window.location.href : "");

@@ -38,8 +38,8 @@ export async function fetchProductsBySlugs(slugs = []) {
         slug: p.slug,
         name: p.name,
         short_description: p.short_description,
-        product_images: [{ image_url: p.image_url, is_primary: true }],
-        categories: { name: p.category_name, slug: p.category_slug },
+        product_images: p.images || [],
+        categories: { name: p.category, slug: p.category_slug },
       }),
     );
 }
@@ -76,8 +76,8 @@ export async function fetchSuggestedProducts({ excludeSlugs = [], limit = 5 } = 
         name: p.name,
         short_description: p.short_description,
         material_summary: p.material_summary,
-        product_images: [{ image_url: p.image_url, is_primary: true }],
-        categories: { name: p.category_name, slug: p.category_slug },
+        product_images: p.images || [],
+        categories: { name: p.category, slug: p.category_slug },
       }),
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Heart, Minus, Plus, ShoppingBag } from "lucide-react";
@@ -23,11 +23,7 @@ export function ProductPurchasePanel({ product, category }) {
   const [colour, setColour] = useState(PDP_COLOURS[0]);
   const [size, setSize] = useState(() => getDefaultProductSize(product, sizes));
   const [qty, setQty] = useState(1);
-
-  useEffect(() => {
-    const opts = getProductSizeOptions(product, category);
-    setSize(getDefaultProductSize(product, opts));
-  }, [product.slug, category?.slug, product.name, category]);
+  const currentSize = sizes.includes(size) ? size : getDefaultProductSize(product, sizes);
 
   return (
     <div className="bh-ui pb-20 md:pb-0">
@@ -83,7 +79,7 @@ export function ProductPurchasePanel({ product, category }) {
                 onClick={() => setSize(opt)}
                 className={cn(
                   "rounded-full px-4 py-2 text-xs font-semibold transition bh-focus-ring md:text-sm",
-                  size === opt
+                  currentSize === opt
                     ? "bg-bh-green text-white shadow-[0_6px_16px_rgba(27,61,47,0.2)]"
                     : "bg-white/90 text-bh-charcoal shadow-[0_4px_14px_rgba(27,61,47,0.08)] hover:bg-bh-sage-muted",
                 )}
@@ -134,7 +130,7 @@ export function ProductPurchasePanel({ product, category }) {
                 productId: product.id,
                 productName: product.name,
                 quantity: qty,
-                customizationRequirement: `Colour: ${colour.label} · Size: ${size}`,
+                customizationRequirement: `Colour: ${colour.label} · Size: ${currentSize}`,
               })
             }
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-bh-green px-6 font-semibold text-white shadow-[0_10px_28px_rgba(27,61,47,0.22)] bh-focus-ring max-lg:h-14 max-lg:text-[0.9375rem] sm:flex-1 lg:h-12 lg:text-[length:var(--bh-text-body)]"

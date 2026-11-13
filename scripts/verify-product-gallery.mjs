@@ -1,5 +1,5 @@
 /**
- * Verify each catalog product exposes 4 gallery slides and files exist on disk.
+ * Verify mapped product gallery images exist and no unrelated images are substituted.
  * Run: node scripts/verify-product-gallery.mjs
  */
 
@@ -19,8 +19,8 @@ for (const p of products) {
   const slides = buildProductGallerySlides(p);
   const imageCount = p.product_images?.length ?? 0;
 
-  if (slides.length !== 4) {
-    issues.push({ slug: p.slug, problem: `slides=${slides.length} (expected 4)`, imageCount });
+  if (slides.length > Math.min(imageCount, 4)) {
+    issues.push({ slug: p.slug, problem: `slides=${slides.length} exceeds mapped images=${imageCount}`, imageCount });
   }
 
   for (const slide of slides) {
@@ -29,21 +29,24 @@ for (const p of products) {
       issues.push({ slug: p.slug, problem: "missing image_url on slide" });
       continue;
     }
-    const file = path.join(PUBLIC, rel.split("/").join(path.sep));
+    const file = path.join(PUBLIC, decodeURIComponent(rel).split("/").join(path.sep));
     if (!fs.existsSync(file)) {
       issues.push({ slug: p.slug, problem: `missing file ${slide.image_url}` });
     }
   }
+  if (!imageCount && slides.length) {
+    issues.push({ slug: p.slug, problem: "unmapped product received fallback images" });
+  }
 }
 
-const sample = products.find((p) => p.slug === "bed-design-1");
+const sample = products.find((p) => p.product_images?.length);
 const sampleSlides = buildProductGallerySlides(sample);
 
 console.log(
   JSON.stringify(
     {
       productCount: products.length,
-      allHaveFourSlides: issues.length === 0,
+      allSlidesUseMappedImages: issues.length === 0,
       issueCount: issues.length,
       sample: {
         slug: sample?.slug,
