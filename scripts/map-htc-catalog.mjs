@@ -31,6 +31,7 @@ function categorySlug(folderName) {
   const map = {
     "AVALON MATTRESS": "avalon-mattress",
     "BAR CHAIR": "bar-chairs",
+    "BAR CHAIRS": "bar-chairs",
     "BED 5FT": "beds-5ft",
     "BED 6FT": "beds-6ft",
     "BED ROOM SET": "bedroom-sets",
@@ -58,7 +59,8 @@ function categorySlug(folderName) {
     "VISITOR CHAIR": "visitor-chairs",
     WARDROBE: "wardrobes",
   };
-  return map[folderName] || slugify(folderName);
+  const key = String(folderName || "").trim().replace(/_/g, " ").toUpperCase();
+  return map[key] || slugify(folderName);
 }
 
 function parseCsv(text) {
@@ -177,8 +179,8 @@ function categorySlugFromFolder(name) {
 }
 
 function parseProductFolder(folderName) {
-  const extraGallery = /_2$/i.test(folderName);
-  const base = folderName.replace(/_2$/i, "").trim();
+  const extraGallery = /(?:_2|\(\d+\))$/i.test(folderName);
+  const base = folderName.replace(/\(\d+\)$/i, "").replace(/_2$/i, "").trim();
   const reviews = [];
 
   if (/^image[_-]?\d+$/i.test(base) || base.startsWith("_")) {
@@ -440,7 +442,11 @@ function main() {
 
       const folderPath = `${categoryFolder}/${prodDir.name}`;
       const exactProducts = productsByFolder.get(normalizeFolderPath(folderPath)) || [];
-      let matchedProducts = exactProducts;
+      const numberedCopyPath = folderPath.replace(/\(\d+\)$/, "");
+      const numberedCopyProducts = /\(\d+\)$/.test(folderPath)
+        ? productsByFolder.get(normalizeFolderPath(numberedCopyPath)) || []
+        : [];
+      let matchedProducts = exactProducts.length ? exactProducts : numberedCopyProducts;
 
       if (!matchedProducts.length && !parsed.skip) {
         const skuProducts = productsBySku.get(normalizeSku(parsed.sku)) || [];
@@ -626,7 +632,7 @@ function main() {
       "Unmatched or ambiguous products are kept without guessed images and listed for manual review.",
       "Dimensions, material, warranty, and colour are not invented.",
       "Image_* and _Other Generated folders are excluded unless the CSV filename identifies them exactly.",
-      "*_2 folders merge only when their CSV filename or unique SKU mapping identifies the same product.",
+      "*_2 and numbered duplicate folders merge only when their CSV filename or unique SKU mapping identifies the same product.",
     ],
     missing_images: missingImages,
     duplicate_image_mappings: duplicateFolders,
@@ -655,7 +661,7 @@ function main() {
     `| CSV products mapped to image folders | ${report.csv_sku_matches} |`,
     `| Successfully mapped (has images) | ${report.successfully_mapped_products} |`,
     `| Missing images | ${report.missing_images.length} |`,
-    `| Duplicate folder mappings | ${report.duplicate_image_mappings} |`,
+    `| Duplicate folder mappings | ${report.duplicate_image_mappings.length} |`,
     `| Ambiguous image folders | ${report.ambiguous_image_folders.length} |`,
     `| Unmatched image folders | ${report.unmatched_images.length} |`,
     `| Products requiring manual review | ${report.products_requiring_manual_review} |`,

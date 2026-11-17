@@ -1,6 +1,6 @@
 # HTC BestHomz product / image mapping report
 
-Generated: 2026-11-13T04:33:32.603Z
+Generated: 2026-11-17T04:28:11.057Z
 
 ## Summary
 
@@ -11,11 +11,11 @@ Generated: 2026-11-13T04:33:32.603Z
 | CSV products mapped to image folders | 593 |
 | Successfully mapped (has images) | 593 |
 | Missing images | 0 |
-| Duplicate folder mappings | [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object] |
+| Duplicate folder mappings | 45 |
 | Ambiguous image folders | 0 |
-| Unmatched image folders | 12 |
+| Unmatched image folders | 8 |
 | Products requiring manual review | 0 |
-| Image files scanned | 3761 |
+| Image files scanned | 3325 |
 | CSV file | HTC_BestHomz_Product_Catalog_Details.csv |
 | CSV SKU matches | 593 |
 | Duplicate SKU rows (retained) | 17 |
@@ -28,7 +28,7 @@ Generated: 2026-11-13T04:33:32.603Z
 - Unmatched or ambiguous products are kept without guessed images and listed for manual review.
 - Dimensions, material, warranty, and colour are not invented.
 - Image_* and _Other Generated folders are excluded unless the CSV filename identifies them exactly.
-- *_2 folders merge only when their CSV filename or unique SKU mapping identifies the same product.
+- *_2 and numbered duplicate folders merge only when their CSV filename or unique SKU mapping identifies the same product.
 
 ## Categories
 
@@ -68,15 +68,11 @@ Generated: 2026-11-13T04:33:32.603Z
 ## Unmatched image folders
 
 - `AVALON MATTRESS/_Other Generated` (41 files)
-- `BAR CHAIR/_Other Generated` (23 files)
 - `BED 6FT/_Other Generated` (92 files)
-- `COFFEE TABLE/_Other Generated` (272 files)
 - `DS4/_Other Generated` (132 files)
 - `DS6/_Other Generated` (256 files)
 - `DS8/_Other Generated` (28 files)
 - `OFFICE TABLE/_Other Generated` (164 files)
-- `OTHERS/_Other Generated` (31 files)
-- `SOFA/_Other Generated` (262 files)
 - `SWING/_Other Generated` (28 files)
 - `TROLLY/_Other Generated` (32 files)
 
