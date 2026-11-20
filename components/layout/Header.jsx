@@ -32,7 +32,7 @@ function DesktopHeader({ navMenus }) {
       <Logo className="shrink-0" showTagline />
 
       <nav aria-label="Main" className="hidden min-w-0 flex-1 justify-center xl:flex">
-        <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 lg:gap-x-5">
+        <ul className="flex flex-nowrap items-center justify-center gap-x-3 2xl:gap-x-5">
           {mainNav.map((item) => {
             const isActive = item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href);
             const items = item.menu ? menuItems(item.menu) : [];
@@ -59,7 +59,7 @@ function DesktopHeader({ navMenus }) {
 
       <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:gap-3">
         <form
-          className="relative hidden min-w-0 sm:block sm:w-[11rem] md:w-[12.5rem] lg:w-[14rem] xl:w-[16rem]"
+          className="relative hidden min-w-0 sm:block sm:w-[10.5rem] md:w-[12rem] xl:w-[13rem] 2xl:w-[16rem]"
           onSubmit={(e) => {
             e.preventDefault();
             const q = new FormData(e.currentTarget).get("q")?.toString().trim();
@@ -115,7 +115,7 @@ function DesktopHeader({ navMenus }) {
         </Link>
         <Link
           href="/signup"
-          className="hidden rounded-full border border-bh-green/20 px-3 py-2 text-sm font-semibold text-bh-green hover:bg-bh-sage/50 bh-focus-ring xl:inline-flex"
+          className="hidden rounded-full border border-bh-green/20 px-3 py-2 text-sm font-semibold text-bh-green hover:bg-bh-sage/50 bh-focus-ring 2xl:inline-flex"
         >
           Sign up
         </Link>

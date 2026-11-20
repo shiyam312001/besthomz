@@ -9,15 +9,27 @@ export function RecentlyViewed({ excludeSlug }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const slugs = getRecentProducts()
+    const recent = getRecentProducts()
+      .filter((p) => p?.slug && p.slug !== excludeSlug);
+
+    const slugs = recent
       .map((p) => p.slug)
       .filter((s) => s !== excludeSlug);
     if (!slugs.length) return;
-    fetchProductsBySlugs(slugs).then((found) => {
-      const valid = found.map((p) => p.slug);
-      pruneRecentProducts(valid);
-      setProducts(found);
-    });
+    let cancelled = false;
+    fetchProductsBySlugs(slugs)
+      .then((found) => {
+        if (cancelled) return;
+        const valid = found.map((p) => p.slug);
+        pruneRecentProducts(valid);
+        setProducts(found);
+      })
+      .catch(() => {
+        // Keep the local-storage fallback displayed if the catalog fetch fails.
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [excludeSlug]);
 
   if (!products.length) return null;

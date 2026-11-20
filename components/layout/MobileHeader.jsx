@@ -15,7 +15,7 @@ export function MobileHeader({ scrolled, onMenuOpen, menuOpen = false }) {
         scrolled && "shadow-sm",
       )}
     >
-      <Logo className="min-w-0" />
+      <Logo className="min-w-0 max-w-[7.5rem] sm:max-w-[9.5rem]" />
       <div className="flex items-center gap-0.5">
         <Link
           href="/search"

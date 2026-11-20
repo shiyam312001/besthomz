@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T04:28:11.057Z",
+  "generated_at": "2026-11-19T16:13:23.409Z",
   "csv_path": "C:\\Users\\shiya\\Videos\\besthomz\\data\\HTC_BestHomz_Product_Catalog_Details.csv",
   "csv_rows": 593,
   "csv_sku_matches": 593,
@@ -25,7 +25,7 @@
   "duplicate_csv_sku_count": 17,
   "unmatched_product_folders": 0,
   "total_category_folders": 29,
-  "total_product_folders": 661,
+  "total_product_folders": 646,
   "total_products": 593,
   "successfully_mapped_products": 593,
   "missing_images": [],
@@ -1086,28 +1086,13 @@
   "manual_review": [],
   "skipped_folders": [
     "AVALON MATTRESS/_Other Generated",
-    "BED 5FT/_Other Generated",
     "BED 6FT/_Other Generated",
-    "BED ROOM SET/_Other Generated",
-    "BOOK SHELF/_Other Generated",
-    "COAT HANGER/_Other Generated",
-    "CONSOLE/_Other Generated",
-    "DINING CHAIR/_Other Generated",
-    "DRESSER/_Other Generated",
     "DS4/_Other Generated",
     "DS6/_Other Generated",
     "DS8/_Other Generated",
-    "MASSAGER CHAIR/_Other Generated",
-    "OFFICE CHAIR/_Other Generated",
     "OFFICE TABLE/_Other Generated",
-    "OUTDOOR/_Other Generated",
-    "RECEPTION TABLE/_Other Generated",
-    "SHOE RACK/_Other Generated",
-    "SIDE TABLE/_Other Generated",
     "SWING/_Other Generated",
-    "TROLLY/_Other Generated",
-    "TV UNIT/_Other Generated",
-    "WARDROBE/_Other Generated"
+    "TROLLY/_Other Generated"
   ],
   "categories": [
     {

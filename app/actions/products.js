@@ -1,47 +1,69 @@
 "use server";
 
 import { createClientOptional } from "@/lib/supabase/server";
-import { loadProductsImport } from "@/lib/catalog/load-import";
+import { importProductsToRecords, loadProductsImport } from "@/lib/catalog/load-import";
 import { mapProductForCard } from "@/lib/utils/product-helpers";
 
 export async function fetchProductsBySlugs(slugs = []) {
   const list = slugs.filter(Boolean);
   if (!list.length) return [];
+  const order = new Map(list.map((slug, index) => [slug, index]));
+  const importProducts = importProductsToRecords();
+  const importedBySlug = new Map(importProducts.map((product) => [product.slug, product]));
 
   const supabase = await createClientOptional();
   if (supabase) {
     const { data } = await supabase
       .from("products")
       .select(
-        `id, slug, name, short_description, is_featured, is_new, is_bestseller, is_customizable, material_summary, dimensions,
-        product_images(image_url, is_primary), categories(name, slug),
+        `id, slug, name, short_description, price, price_uncertain, is_featured, is_new, is_bestseller, is_customizable, material_summary, dimensions, colours,
+        product_images(image_url, is_primary, sort_order), categories(name, slug),
         product_features(feature, description), product_specifications(specification_name, specification_value)`,
       )
       .in("slug", list)
       .eq("status", "active");
-    return (data || []).map((p) => ({
-      ...mapProductForCard(p),
-      product_features: p.product_features,
-      product_specifications: p.product_specifications,
-      material_summary: p.material_summary,
-      is_customizable: p.is_customizable,
-      dimensions: p.dimensions,
-    }));
+    const productsBySlug = new Map((data || []).map((product) => [product.slug, product]));
+    return list
+      .map((slug) => {
+        const product = productsBySlug.get(slug);
+        const imported = importedBySlug.get(slug);
+        if (!product && !imported) return null;
+        if (!product) return mapProductForCard(imported);
+        const dbImageCount = product.product_images?.length ?? 0;
+        const importImageCount = imported?.product_images?.length ?? 0;
+        const useImportImages =
+          importImageCount >= 4 || importImageCount > dbImageCount;
+        const merged = {
+          ...product,
+          name: imported?.name || product.name,
+          short_description: imported?.short_description || product.short_description,
+          price: imported?.price ?? product.price ?? null,
+          price_uncertain: imported?.price_uncertain ?? product.price_uncertain ?? true,
+          categories: imported?.categories || product.categories,
+          material_summary: imported?.material_summary ?? product.material_summary,
+          dimensions: imported?.dimensions ?? product.dimensions,
+          colours: imported?.colours ?? product.colours ?? [],
+          product_images: useImportImages
+            ? imported.product_images
+            : product.product_images,
+        };
+        return {
+          ...mapProductForCard(merged),
+          product_features: merged.product_features,
+          product_specifications: merged.product_specifications,
+          material_summary: merged.material_summary,
+          is_customizable: merged.is_customizable,
+          dimensions: merged.dimensions,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => (order.get(a.slug) ?? 999) - (order.get(b.slug) ?? 999));
   }
 
-  const imported = loadProductsImport();
-  return imported
+  return importProducts
     .filter((p) => list.includes(p.slug))
-    .map((p) =>
-      mapProductForCard({
-        id: p.id,
-        slug: p.slug,
-        name: p.name,
-        short_description: p.short_description,
-        product_images: p.images || [],
-        categories: { name: p.category, slug: p.category_slug },
-      }),
-    );
+    .map(mapProductForCard)
+    .sort((a, b) => (order.get(a.slug) ?? 999) - (order.get(b.slug) ?? 999));
 }
 
 export async function fetchSuggestedProducts({ excludeSlugs = [], limit = 5 } = {}) {

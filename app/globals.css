@@ -36,8 +36,8 @@
   --bh-section-y: 4rem;
   --bh-header-height: 4.5rem;
   --bh-topbar-height: 2.25rem;
-  /** Stacked topbar + main nav (mobile: 2rem bar + 3.5rem nav) */
-  --bh-site-header-offset: calc(2rem + 3.5rem);
+  /** Stacked topbar + main nav (mobile/tablet: 2.25rem bar + 3.5rem nav) */
+  --bh-site-header-offset: calc(2.25rem + 3.5rem);
 
   --background: var(--bh-warm-white);
   --foreground: var(--bh-text);
@@ -97,13 +97,10 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  @media (min-width: 768px) {
-    :root {
-      --bh-site-header-offset: calc(var(--bh-topbar-height) + 4.75rem);
-    }
-  }
-
   @media (min-width: 1024px) {
+    :root {
+      --bh-site-header-offset: 113px;
+    }
     :root {
       --bh-text-hero: clamp(3.5rem, 2.8vw + 1.25rem, 4rem);
       --bh-text-h1: clamp(2.625rem, 1.8vw + 1.5rem, 3rem);

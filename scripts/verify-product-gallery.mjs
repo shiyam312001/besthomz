@@ -5,6 +5,7 @@
 
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { fileURLToPath } from "url";
 import { importProductsToRecords } from "../lib/catalog/load-import.js";
 import { buildProductGallerySlides } from "../lib/utils/product-gallery.js";
@@ -18,6 +19,7 @@ const issues = [];
 for (const p of products) {
   const slides = buildProductGallerySlides(p);
   const imageCount = p.product_images?.length ?? 0;
+  const imageHashes = [];
 
   if (slides.length > Math.min(imageCount, 4)) {
     issues.push({ slug: p.slug, problem: `slides=${slides.length} exceeds mapped images=${imageCount}`, imageCount });
@@ -32,7 +34,13 @@ for (const p of products) {
     const file = path.join(PUBLIC, decodeURIComponent(rel).split("/").join(path.sep));
     if (!fs.existsSync(file)) {
       issues.push({ slug: p.slug, problem: `missing file ${slide.image_url}` });
+      continue;
     }
+    const hash = crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+    imageHashes.push(hash);
+  }
+  if (imageHashes.length >= 2 && new Set(imageHashes).size === 1) {
+    issues.push({ slug: p.slug, problem: "gallery contains only duplicate image bytes" });
   }
   if (!imageCount && slides.length) {
     issues.push({ slug: p.slug, problem: "unmapped product received fallback images" });

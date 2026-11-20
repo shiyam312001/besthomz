@@ -8,6 +8,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import crypto from "crypto";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PRODUCTS_DIR = path.join(ROOT, "public", "Products");
@@ -16,6 +17,36 @@ const CSV_CANDIDATES = [
   path.join(ROOT, "data", "HTC_BestHomz_Product_Catalog_Details.csv"),
 ];
 const IMAGE_EXT = new Set([".webp", ".jpg", ".jpeg", ".png", ".gif", ".avif"]);
+
+function fileHash(file) {
+  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+}
+
+function deduplicateProductImages(product) {
+  const seenHashes = new Set();
+  const unique = [];
+  for (const img of product.images || []) {
+    const relative = decodeURIComponent(String(img.original_path || img.image_url || "")
+      .replace(/^\/Products\//, "")
+      .replace(/^\//, ""));
+    const imagePath = path.resolve(PRODUCTS_DIR, ...relative.split(/[\\/]+/));
+    let hash;
+    if (fs.existsSync(imagePath) && fs.statSync(imagePath).isFile()) {
+      hash = fileHash(imagePath);
+    } else {
+      hash = String(img.image_url || img.original_path || "");
+    }
+    if (seenHashes.has(hash)) continue;
+    seenHashes.add(hash);
+    unique.push({
+      ...img,
+      image_type: unique.length === 0 ? "primary" : "gallery",
+      is_primary: unique.length === 0,
+      sort_order: unique.length + 1,
+    });
+  }
+  product.images = unique;
+}
 
 function slugify(value) {
   return String(value)
@@ -424,6 +455,23 @@ function main() {
     }
   }
 
+  const duplicateSkuCounts = new Map();
+  for (const product of [...productsBySku.values()].flat()) {
+    if (!product.sku) continue;
+    const skuKey = normalizeSku(product.sku);
+    duplicateSkuCounts.set(skuKey, (duplicateSkuCounts.get(skuKey) || 0) + 1);
+  }
+  for (const [skuKey, productRows] of productsBySku.entries()) {
+    if (duplicateSkuCounts.get(skuKey) <= 1) continue;
+    for (const product of productRows) {
+      const price = Number(product.price);
+      const variantLabel = Number.isFinite(price) && price > 0
+        ? `₹${price.toLocaleString("en-IN")}`
+        : "Variant";
+      product.name = `${product.name} - ${variantLabel}`;
+    }
+  }
+
   const categoryDirs = fs
     .readdirSync(PRODUCTS_DIR, { withFileTypes: true })
     .filter((d) => d.isDirectory() && d.name !== "__pycache__");
@@ -514,6 +562,7 @@ function main() {
   for (const skuProducts of productsBySku.values()) {
     for (const product of skuProducts) {
       product.review_flags = [...new Set(product.review_flags)];
+      deduplicateProductImages(product);
       if (!product.images.length) {
         for (const sourcePath of product._image_source_paths) {
           const relative = String(sourcePath)
@@ -574,6 +623,7 @@ function main() {
           folders: product.source_folders,
         });
       }
+      deduplicateProductImages(product);
       delete product._image_source_paths;
       delete product._csv_row_index;
       products.push({
