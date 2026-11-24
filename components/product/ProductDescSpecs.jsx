@@ -1,22 +1,26 @@
 import { cn } from "@/lib/cn";
 
-function buildDefaultSpecs(product) {
+function buildProductSpecRows(product, specs) {
   const rows = [];
-  if (product.categories?.name) rows.push({ name: "Product Type", value: product.categories.name });
-  if (product.material_summary) rows.push({ name: "Material", value: product.material_summary });
-  if (product.dimensions) rows.push({ name: "Dimensions", value: product.dimensions });
-  if (product.warranty) rows.push({ name: "Warranty", value: product.warranty });
-  if (product.care_instructions) rows.push({ name: "Care Instructions", value: product.care_instructions });
-  rows.push({ name: "Style", value: "Modern" });
-  rows.push({ name: "Colour Options", value: "Multiple finishes available" });
+  const add = (name, value) => {
+    const text = String(value ?? "").trim();
+    if (!text || rows.some((row) => row.name.toLowerCase() === name.toLowerCase())) return;
+    rows.push({ name, value: text });
+  };
+
+  add("Product Type", product.categories?.name || product.category_name || product.category);
+  add("Material", product.material_summary);
+  add("Dimensions", product.dimensions);
+  add("Warranty", product.warranty);
+  add("Care Instructions", product.care_instructions);
+  for (const spec of specs) add(spec.specification_name, spec.specification_value);
+  add("SKU", product.sku);
+
   return rows;
 }
 
 export function ProductDescSpecs({ product, specs = [] }) {
-  const specRows =
-    specs.length > 0
-      ? specs.map((s) => ({ name: s.specification_name, value: s.specification_value }))
-      : buildDefaultSpecs(product);
+  const specRows = buildProductSpecRows(product, specs);
 
   const raw = product.description || product.short_description || "";
   const paragraphs = raw

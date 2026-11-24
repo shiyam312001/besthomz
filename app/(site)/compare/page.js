@@ -1,10 +1,12 @@
 import { PageContainer } from "@/components/layout/PageContainer";
 import { CompareView } from "@/components/compare/CompareView";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "Compare products",
-  robots: { index: false, follow: false },
-};
+export const metadata = pageMetadata({
+  title: "Compare Furniture",
+  path: "/compare",
+  noIndex: true,
+});
 
 export default function ComparePage() {
   return (

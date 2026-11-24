@@ -25,6 +25,7 @@ export function ProductCard({
   description,
   specLine,
   image,
+  imageFit = "contain",
   href = "#",
   badge,
   colors = [],
@@ -75,19 +76,14 @@ export function ProductCard({
     >
       <Link
         href={href}
-        className={cn(
-          "relative block shrink-0 overflow-hidden bg-bh-cream/70",
-          isGlassCard
-            ? "h-[9.25rem] sm:h-[10.5rem] md:h-[11.25rem]"
-            : "aspect-[4/3]",
-        )}
+        className="relative block aspect-[3/2] w-full shrink-0 overflow-hidden bg-white"
       >
         <Image
           src={image}
           alt={name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+          className={imageFit === "cover" ? "object-cover" : "object-contain"}
         />
         {badge && !isHome && (
           <Badge tone={badgeTone[badge] ?? "default"} className="absolute left-3 top-3">

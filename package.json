@@ -11,6 +11,7 @@
     "catalog:reconcile": "node scripts/reconcile-catalog.mjs",
     "catalog:enrich": "node scripts/enrich-products.mjs",
     "catalog:download-images": "node scripts/download-product-images.mjs",
+    "catalog:generate-thumbnails": "node scripts/generate-product-thumbnails.mjs",
     "catalog:verify-gallery": "node scripts/verify-product-gallery.mjs",
     "catalog:validate": "node scripts/validate-products-import.mjs",
     "catalog:import": "node scripts/import-products.mjs"
@@ -27,6 +28,7 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4"
   }
 }

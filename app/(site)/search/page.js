@@ -1,10 +1,14 @@
 import { SearchView } from "@/components/search/SearchView";
 import { searchProducts } from "@/lib/catalog/products";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "Search",
-  description: "Search Best Homz furniture by name or category.",
-};
+export const metadata = pageMetadata({
+  title: "Search Furniture",
+  description: "Search premium furniture by name or category at Best Homz Chennai.",
+  path: "/search",
+  noIndex: true,
+  noIndex: true,
+});
 
 export default async function SearchPage({ searchParams }) {
   const params = await searchParams;

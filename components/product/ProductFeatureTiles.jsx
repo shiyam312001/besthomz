@@ -1,15 +1,16 @@
 import Image from "next/image";
-import { PDP_DEFAULT_TILES } from "@/components/product/product-pdp-data";
 
 export function ProductFeatureTiles({ features = [], image }) {
-  const tiles =
-    features.length >= 4
-      ? features.slice(0, 4).map((f) => ({
-          title: f.feature || f.title,
-          description: f.description || "",
-          image,
-        }))
-      : PDP_DEFAULT_TILES.map((t) => ({ ...t, image }));
+  const tiles = features
+    .map((feature) => ({
+      title: feature.feature || feature.title,
+      description: feature.description || "",
+      image,
+    }))
+    .filter((feature) => feature.title)
+    .slice(0, 4);
+
+  if (!tiles.length) return null;
 
   return (
     <section className="mt-12 md:mt-16">

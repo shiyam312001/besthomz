@@ -11,6 +11,8 @@ export default function robots() {
         "/cart",
         "/wishlist",
         "/compare",
+        "/checkout",
+        "/order/",
         "/login",
         "/signup",
         "/forgot-password",

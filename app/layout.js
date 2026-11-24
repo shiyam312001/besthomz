@@ -3,6 +3,7 @@ import "./globals.css";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import { site } from "@/config/site";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { organizationSchema } from "@/lib/seo/structured-data";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -31,6 +32,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const organization = organizationSchema();
   return (
     <html
       lang="en"
@@ -38,6 +40,10 @@ export default function RootLayout({ children }) {
       className={`${playfair.variable} ${dmSans.variable} h-full`}
     >
       <body className="flex min-h-full flex-col font-sans font-normal antialiased bh-type-body text-bh-text">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }}
+        />
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

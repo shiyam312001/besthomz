@@ -1,7 +1,7 @@
 "use server";
 
 import { createClientOptional } from "@/lib/supabase/server";
-import { importProductsToRecords, loadProductsImport } from "@/lib/catalog/load-import";
+import { importProductsToRecords } from "@/lib/catalog/load-import";
 import { mapProductForCard } from "@/lib/utils/product-helpers";
 
 export async function fetchProductsBySlugs(slugs = []) {
@@ -39,6 +39,7 @@ export async function fetchProductsBySlugs(slugs = []) {
           short_description: imported?.short_description || product.short_description,
           price: imported?.price ?? product.price ?? null,
           price_uncertain: imported?.price_uncertain ?? product.price_uncertain ?? true,
+          thumbnail_url: imported?.thumbnail_url || product.thumbnail_url || null,
           categories: imported?.categories || product.categories,
           material_summary: imported?.material_summary ?? product.material_summary,
           dimensions: imported?.dimensions ?? product.dimensions,
@@ -71,6 +72,9 @@ export async function fetchSuggestedProducts({ excludeSlugs = [], limit = 5 } = 
   const supabase = await createClientOptional();
 
   if (supabase) {
+    const thumbnailBySlug = new Map(
+      importProductsToRecords().map((product) => [product.slug, product.thumbnail_url]),
+    );
     const { data } = await supabase
       .from("products")
       .select(
@@ -83,23 +87,18 @@ export async function fetchSuggestedProducts({ excludeSlugs = [], limit = 5 } = 
     const mapped = (data || [])
       .filter((p) => !exclude.has(p.slug))
       .slice(0, limit)
-      .map((p) => mapProductForCard(p));
+      .map((p) =>
+        mapProductForCard({
+          ...p,
+          thumbnail_url: thumbnailBySlug.get(p.slug) || p.thumbnail_url,
+        }),
+      );
     if (mapped.length) return mapped;
   }
 
-  const imported = loadProductsImport();
+  const imported = importProductsToRecords();
   return imported
     .filter((p) => !exclude.has(p.slug))
     .slice(0, limit)
-    .map((p) =>
-      mapProductForCard({
-        id: p.id,
-        slug: p.slug,
-        name: p.name,
-        short_description: p.short_description,
-        material_summary: p.material_summary,
-        product_images: p.images || [],
-        categories: { name: p.category, slug: p.category_slug },
-      }),
-    );
+    .map(mapProductForCard);
 }

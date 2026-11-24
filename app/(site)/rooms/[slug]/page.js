@@ -6,12 +6,30 @@ import { fetchRoomBySlug } from "@/lib/catalog/rooms";
 import { fetchActiveProducts } from "@/lib/catalog/products";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { RoomsExpertCta } from "@/components/rooms/RoomsExpertCta";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbSchema } from "@/lib/seo/structured-data";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const room = await fetchRoomBySlug(slug);
-  if (!room) return { title: "Room not found" };
-  return { title: room.name, description: room.description };
+  if (!room) return pageMetadata({
+    title: "Room not found",
+    path: `/rooms/${slug}`,
+    noIndex: true,
+  });
+  return pageMetadata({
+    title: `${room.name} Furniture in Chennai`,
+    description: room.description
+      ? `${room.description} Shop curated ${room.name.toLowerCase()} furniture in Chennai at Best Homz.`
+      : `Explore ${room.name.toLowerCase()} furniture, designs and customization options in Chennai at Best Homz.`,
+    path: `/rooms/${slug}`,
+    keywords: [
+      `${room.name} furniture Chennai`,
+      `${room.name} furniture Aminjikarai`,
+      `buy ${room.name.toLowerCase()} furniture`,
+      `premium ${room.name.toLowerCase()} furniture`,
+    ],
+  });
 }
 
 export default async function RoomDetailPage({ params }) {
@@ -20,9 +38,18 @@ export default async function RoomDetailPage({ params }) {
   if (!room) notFound();
 
   const products = await fetchActiveProducts({ limit: 8 });
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Rooms", path: "/rooms" },
+    { name: room.name },
+  ]);
 
   return (
     <div className="bg-bh-warm-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }}
+      />
       <section className="relative min-h-[16rem] overflow-hidden md:min-h-[20rem]">
         <Image src={room.hero_image} alt={room.name} fill className="object-cover" sizes="100vw" priority />
         <div className="absolute inset-0 bg-gradient-to-r from-bh-green-dark/85 via-bh-green-dark/45 to-bh-green-dark/20" />

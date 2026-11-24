@@ -16,12 +16,14 @@ import { RecordRecentlyViewed } from "@/components/product/RecordRecentlyViewed"
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
 import { pickPrimaryImage } from "@/lib/utils/product-helpers";
 import { absoluteUrl } from "@/lib/seo/site-url";
+import { isMattressCategory } from "@/components/product/product-pdp-data";
 
 export function ProductDetail({ product, related }) {
   const category = product.categories;
   const specs = product.product_specifications || [];
   const features = product.product_features || [];
   const primaryImage = pickPrimaryImage(product);
+  const isMattress = isMattressCategory(category);
 
   const recentPayload = {
     slug: product.slug,
@@ -36,11 +38,13 @@ export function ProductDetail({ product, related }) {
       : "/rooms";
 
   return (
-    <div className="bg-bh-warm-white pb-safe-purchase md:pb-0">
+    <div className="bg-bh-warm-white">
       <RecordRecentlyViewed product={recentPayload} />
-      <PageContainer className="py-6 md:py-10">
+      <PageContainer
+        className={isMattress ? "max-w-[100rem] py-4 md:py-8" : "max-w-[100rem] py-6 md:py-10"}
+      >
         <Breadcrumb
-          className="mb-6"
+          className={isMattress ? "mb-2 md:mb-3" : "mb-6"}
           items={[
             { label: "Home", href: "/" },
             { label: "Furniture", href: "/furniture" },
@@ -48,7 +52,7 @@ export function ProductDetail({ product, related }) {
             { label: product.name },
           ]}
         />
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-12">
+        <div className="grid gap-6 xl:grid-cols-2 xl:gap-8 2xl:gap-10">
           <ProductGallery
             product={product}
             productName={product.name}
@@ -65,9 +69,9 @@ export function ProductDetail({ product, related }) {
           <AddToCompareButton product={product} />
         </div>
 
-        <ProductFeatureTiles features={features} image={primaryImage} />
+        {!isMattress && <ProductFeatureTiles features={features} image={primaryImage} />}
         <ProductDescSpecs product={product} specs={specs} />
-        <ProductCompleteRoomBanner roomHref={roomHref} />
+        {!isMattress && <ProductCompleteRoomBanner roomHref={roomHref} />}
 
         {related?.length > 0 && (
           <section className="mt-12 md:mt-16">

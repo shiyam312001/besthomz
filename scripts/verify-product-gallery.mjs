@@ -7,6 +7,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
+import sharp from "sharp";
 import { importProductsToRecords } from "../lib/catalog/load-import.js";
 import { buildProductGallerySlides } from "../lib/utils/product-gallery.js";
 
@@ -45,16 +46,35 @@ for (const p of products) {
   if (!imageCount && slides.length) {
     issues.push({ slug: p.slug, problem: "unmapped product received fallback images" });
   }
+
+  const thumbnailPath = p.thumbnail_url?.replace(/^\//, "");
+  const thumbnailFile = thumbnailPath
+    ? path.join(PUBLIC, decodeURIComponent(thumbnailPath).split("/").join(path.sep))
+    : null;
+  if (!thumbnailFile || !fs.existsSync(thumbnailFile)) {
+    issues.push({ slug: p.slug, problem: "missing generated card thumbnail" });
+  } else {
+    const metadata = await sharp(thumbnailFile).metadata();
+    if (metadata.width !== 720 || metadata.height !== 480) {
+      issues.push({
+        slug: p.slug,
+        problem: `thumbnail dimensions are ${metadata.width}x${metadata.height}, expected 720x480`,
+      });
+    }
+  }
 }
 
 const sample = products.find((p) => p.product_images?.length);
 const sampleSlides = buildProductGallerySlides(sample);
+const thumbnailIssues = issues.filter(({ problem }) => problem.includes("thumbnail"));
+const galleryIssues = issues.filter(({ problem }) => !problem.includes("thumbnail"));
 
 console.log(
   JSON.stringify(
     {
       productCount: products.length,
-      allSlidesUseMappedImages: issues.length === 0,
+      allSlidesUseMappedImages: galleryIssues.length === 0,
+      allCardThumbnailsValid: thumbnailIssues.length === 0,
       issueCount: issues.length,
       sample: {
         slug: sample?.slug,

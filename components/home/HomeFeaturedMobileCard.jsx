@@ -14,6 +14,7 @@ export function HomeFeaturedMobileCard({
   id,
   name,
   image,
+  imageFit = "contain",
   href = "#",
   badge,
   price,
@@ -38,14 +39,14 @@ export function HomeFeaturedMobileCard({
     >
       <Link
         href={href}
-        className="relative block h-[7.75rem] shrink-0 overflow-hidden rounded-t-2xl bg-bh-cream/80 sm:h-[8.25rem]"
+        className="relative block aspect-[3/2] w-full shrink-0 overflow-hidden rounded-t-2xl bg-white"
       >
         <Image
           src={image}
           alt={name}
           fill
           sizes="(max-width: 1024px) 46vw, 20vw"
-          className="object-cover"
+          className={imageFit === "cover" ? "object-cover" : "object-contain"}
         />
         {showFeaturedBadge && (
           <span

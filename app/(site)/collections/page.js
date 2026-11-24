@@ -2,11 +2,19 @@ import { CollectionsView } from "@/components/collections/CollectionsView";
 import { fetchActiveCollections } from "@/lib/catalog/collections";
 import { buildCollectionProductSlugMap } from "@/lib/catalog/collection-product-map";
 import { fetchActiveProducts } from "@/lib/catalog/products";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "Collections",
-  description: "Explore timeless furniture collections from Best Homz — living, bedroom, dining and office.",
-};
+export const metadata = pageMetadata({
+  title: "Furniture Collections",
+  description: "Explore Best Homz living, bedroom, dining and office furniture collections, designed for premium Chennai homes.",
+  path: "/collections",
+  keywords: [
+    "furniture collections Chennai",
+    "living room collection Chennai",
+    "bedroom collection Chennai",
+    "office furniture collection Chennai",
+  ],
+});
 
 export default async function CollectionsPage() {
   const [collections, products] = await Promise.all([

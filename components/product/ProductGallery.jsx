@@ -45,13 +45,18 @@ export function ProductGallery({ product, productName, isNew, productId, slug, i
   };
 
   return (
-    <div>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-bh-cream/60 bh-glass-card bh-shadow-soft">
+    <div className="min-w-0 xl:flex xl:h-full xl:flex-col">
+      <div
+        className={cn(
+          "relative min-h-0 overflow-hidden rounded-3xl bg-white bh-glass-card bh-shadow-soft aspect-[4/3]",
+          "xl:flex-1",
+        )}
+      >
         <Image
           src={current.image_url}
           alt={current.alt_text || productName}
           fill
-          className="object-cover"
+          className="object-contain"
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
@@ -95,7 +100,7 @@ export function ProductGallery({ product, productName, isNew, productId, slug, i
       {slides.length > 0 && (
         <div
           className={cn(
-            "mt-4 grid gap-3",
+            "mt-4 grid shrink-0 gap-3",
             slides.length === 1 && "grid-cols-1 max-w-[5.5rem]",
             slides.length === 2 && "grid-cols-2 max-w-[11.5rem]",
             slides.length === 3 && "grid-cols-3 max-w-[17.5rem]",
@@ -108,7 +113,7 @@ export function ProductGallery({ product, productName, isNew, productId, slug, i
               type="button"
               onClick={() => setIndex(i)}
               className={cn(
-                "relative aspect-square w-full overflow-hidden rounded-xl bh-focus-ring",
+                "relative aspect-square w-full overflow-hidden rounded-xl bg-white bh-focus-ring",
                 safeIndex === i
                   ? "shadow-[0_6px_18px_rgba(27,61,47,0.16)] ring-2 ring-bh-green/40 ring-offset-2 ring-offset-bh-warm-white"
                   : "shadow-[0_4px_12px_rgba(27,61,47,0.08)]",
@@ -116,7 +121,7 @@ export function ProductGallery({ product, productName, isNew, productId, slug, i
               aria-label={`View image ${i + 1}`}
               aria-current={safeIndex === i}
             >
-              <Image src={img.image_url} alt="" fill className="object-cover" sizes="(max-width:768px) 22vw, 120px" />
+              <Image src={img.image_url} alt="" fill className="object-contain" sizes="(max-width:768px) 22vw, 120px" />
             </button>
           ))}
         </div>
